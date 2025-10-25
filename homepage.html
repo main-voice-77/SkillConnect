@@ -1,170 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkillConnect | Welcome</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Karla:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --color-primary-dark: #8b7454;
-            --color-primary-light: #cfa874;
-            --color-background-soft: #fbfbf7;
-            --color-card-bg: #ffffff;
-            --color-text-dark: #3a332d;
-            --color-border: #e0d9cf;
-            --font-heading: 'Playfair Display', serif;
-            --font-body: 'Karla', sans-serif;
-        }
-        body {
-            margin: 0;
-            font-family: var(--font-body);
-            background-color: var(--color-background-soft);
-            color: var(--color-text-dark);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="%23e0d9cf" fill-opacity="0.2"><path d="M0 40L40 0H20L0 20V40ZM40 40V20L20 40H40Z"/></g></svg>');
-            background-size: 40px 40px;
-        }
-        .main-container {
-            max-width: 900px;
-            padding: 40px;
-            background-color: var(--color-card-bg);
-            border-radius: 12px;
-            box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        h1 {
-            font-family: var(--font-heading);
-            font-size: 3rem;
-            color: var(--color-primary-dark);
-            margin-bottom: 5px;
-        }
-        p.tagline {
-            font-size: 1.2rem;
-            color: #70685e;
-            margin-bottom: 40px;
-        }
-        .role-selection {
-            display: flex;
-            justify-content: space-around;
-            gap: 30px;
-        }
-        .role-card {
-            flex: 1;
-            padding: 30px 20px;
-            border: 2px solid var(--color-border);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        .role-card:hover {
-            border-color: var(--color-primary-light);
-            box-shadow: 0 0 10px rgba(139, 116, 84, 0.2);
-        }
-        .role-card h3 {
-            color: var(--color-text-dark);
-            margin-top: 0;
-        }
-        .btn-group {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .btn-group button {
-            padding: 12px;
-            background-color: var(--color-primary-dark);
-            border: none;
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .btn-group button.secondary {
-            background-color: #e0d9cf;
-            color: var(--color-text-dark);
-        }
-        .btn-group button:hover {
-            background-color: var(--color-primary-light);
-        }
-        .btn-group button.secondary:hover {
-            background-color: #d1c8bd;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SkillConnect | Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Karla:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+:root {
+--color-primary-dark: #8b7454;
+--color-primary-light: #cfa874;
+--color-background-soft: #fbfbf7;
+--color-card-bg: #ffffff;
+--color-text-dark: #3a332d;
+--color-border: #e0d9cf;
+--font-heading: 'Playfair Display', serif;
+--font-body: 'Karla', sans-serif;
+}
+body {
+margin: 0;
+font-family: var(--font-body);
+background-color: var(--color-background-soft);
+color: var(--color-text-dark);
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="%23e0d9cf" fill-opacity="0.2"><path d="M0 40L40 0H20L0 20V40ZM40 40V20L20 40H40Z"/></g></svg>');
+background-size: 40px 40px;
+}
+.main-container {
+width: 100%;
+max-width: 420px;
+padding: 40px;
+background-color: var(--color-card-bg);
+border-radius: 12px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+text-align: center;
+}
+h1 {
+font-family: var(--font-heading);
+font-size: 2.5rem;
+color: var(--color-primary-dark);
+margin-bottom: 8px;
+}
+p.tagline {
+font-size: 1.1rem;
+color: #70685e;
+margin-bottom: 30px;
+}
+form {
+display: flex;
+flex-direction: column;
+gap: 18px;
+margin-bottom: 25px;
+}
+label {
+text-align: left;
+font-weight: 600;
+margin-bottom: 5px;
+color: var(--color-text-dark);
+}
+input {
+padding: 12px 14px;
+border: 1px solid var(--color-border);
+border-radius: 6px;
+font-size: 1rem;
+background-color: var(--color-background-soft);
+transition: all 0.2s ease-in-out;
+}
+input:focus {
+border-color: var(--color-primary-light);
+outline: none;
+}
+button {
+background-color: var(--color-primary-dark);
+color: white;
+border: none;
+padding: 12px;
+font-size: 1rem;
+font-weight: 600;
+border-radius: 6px;
+cursor: pointer;
+transition: background-color 0.2s;
+}
+button:hover {
+background-color: var(--color-primary-light);
+}
+.signup-links {
+margin-top: 20px;
+font-size: 0.95rem;
+color: #5e544a;
+}
+.signup-links a {
+color: var(--color-primary-dark);
+font-weight: 600;
+text-decoration: none;
+margin: 0 6px;
+}
+.signup-links a:hover {
+text-decoration: underline;
+}
+</style>
 </head>
 <body>
-    <div class="main-container">
-        <h1>SkillConnect</h1>
-        <p class="tagline">Your gateway to trusted talent and valuable work.</p>
+<div class="main-container">
+<h1>SkillConnect</h1>
+<p class="tagline">Log in to find jobs or hire skilled workers.</p>
+<form id="login-form">
+<div>
+<label for="email">Email Address</label>
+<input type="email" id="email" placeholder="Enter your email" required />
+</div>
+<div>
+<label for="password">Password</label>
+<input type="password" id="password" placeholder="Enter your password" required />
+</div>
+<button type="submit">Login</button>
+</form>
+<div class="signup-links">
+Don’t have an account?<br />
+<a href="worker_signup.html">Sign Up as Worker</a> |
+<a href="employer_signup.html">Sign Up as Employer</a>
+</div>
+</div>
 
-        <div class="role-selection">
-            <div class="role-card">
-                <h3>I'm a Worker (Looking for jobs)</h3>
-                <p>Register your skills or view available listings.</p>
-                <div class="btn-group">
-                    <button onclick="window.location.href='worker_registration.html'">Sign Up</button>
-                    <button onclick="window.location.href='worker_dashboard.html'" class="secondary">Login to Dashboard</button>
-                </div>
-            </div>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+const firebaseConfig = {
+apiKey: "AIzaSyD6Kn44-ilM8DoCrzUFwoVYyd4GmuDcsFE",
+authDomain: "skillconnect-f6632.firebaseapp.com",
+projectId: "skillconnect-f6632",
+storageBucket: "skillconnect-f6632.appspot.com",
+messagingSenderId: "462430536837",
+appId: "1:462430536837:web:4e6a791ca9b462a29895ec"
+};
 
-            <div class="role-card">
-                <h3>I'm an Employer (Hiring talent)</h3>
-                <p>Post a job or check your existing posts.</p>
-                <div class="btn-group">
-                    <button onclick="window.location.href='employer_signup.html'">Sign Up</button>
-                    <button onclick="promptForLogin('employers')" class="secondary">Login to Dashboard</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script>
-        // ⚠️ USE YOUR LIVE FIREBASE PROJECT CONFIG DETAILS HERE ⚠️
-        const firebaseConfig = {
-            apiKey: "AIzaSyD6Kn44-ilM8DoCrzUFwoVYyd4GmuDcsFE",
-            authDomain: "skillconnect-f6632.firebaseapp.com",
-            projectId: "skillconnect-f6632",
-            storageBucket: "skillconnect-f6632.firebasestorage.app",
-            messagingSenderId: "462430536837",
-            appId: "1:462430536837:web:4e6a791ca9b462a29895ec"
-        };
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+const app = firebase.initializeApp(firebaseConfig);
+// REMOVED: const auth = firebase.auth();
+const db = firebase.firestore();
 
-        // --- SIMPLIFIED LOGIN FUNCTION ---
-        function promptForLogin(role) {
-            const email = prompt("Enter your registered email ID to login:");
-            if (!email) return;
+const loginForm = document.getElementById('login-form');
+loginForm.addEventListener('submit', async (e) => {
+e.preventDefault();
+const email = document.getElementById('email').value.trim();
+const password = document.getElementById('password').value.trim();
+const form = e.target;
+const loginButton = form.querySelector('button[type="submit"]');
+loginButton.disabled = true;
 
-            // Determine collection based on role
-            const collectionName = (role === 'employers') ? 'employers' : 'workers';
-            const redirectPage = (role === 'employers') ? 'employer_dashboard.html' : 'worker_dashboard.html';
+try {
+// 1. ATTEMPT LOGIN AS WORKER
+// Query Firestore for a document where both email and password match the inputs.
+let workerQuery = await db.collection('workers')
+.where('email', '==', email)
+.where('password', '==', password)
+.limit(1)
+.get();
 
-            // Check if user exists in the database
-            db.collection(collectionName)
-                .where('email', '==', email)
-                .limit(1)
-                .get()
-                .then(snapshot => {
-                    if (snapshot.empty) {
-                        alert("Login failed. No account found with that email. Please sign up first.");
-                    } else {
-                        alert(`Welcome back, ${email}! Redirecting to your dashboard.`);
-                        // Simulate successful login by redirecting
-                        window.location.href = redirectPage;
-                    }
-                })
-                .catch(error => {
-                    console.error("Login check failed:", error);
-                    alert("A database error occurred during login. Check console (F12).");
-                });
-        }
-    </script>
+if (!workerQuery.empty) {
+alert(`Welcome back, Worker ${email}!`);
+window.location.href = 'worker_dashboard.html';
+return;
+}
+
+// 2. ATTEMPT LOGIN AS EMPLOYER
+let employerQuery = await db.collection('employers')
+.where('email', '==', email)
+.where('password', '==', password)
+.limit(1)
+.get();
+
+if (!employerQuery.empty) {
+alert(`Welcome back, Employer ${email}!`);
+window.location.href = 'employer_dashboard.html';
+return;
+}
+
+// 3. LOGIN FAILED (Credentials not found in either collection)
+alert('User not found or invalid login credentials.');
+form.reset();
+
+} catch (error) {
+console.error("Login Error:", error);
+
+// This type of error is usually a permissions issue if the user is not found.
+alert('A database error occurred during login. Check console for details or verify security rules.');
+form.reset();
+} finally {
+loginButton.disabled = false;
+}
+});
+});
+</script>
 </body>
 </html>
