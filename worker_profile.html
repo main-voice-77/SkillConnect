@@ -564,7 +564,7 @@
                 if (matchView && matchView[1]) {
                     const fileId = matchView[1];
                     // The 'uc?export=view&id=' format is the most reliable for direct image embeds
-                    return https://drive.google.com/uc?export=view&id=${fileId};
+                    return 'https://drive.google.com/uc?export=view&id=${fileId}';
                 }
 
                 // 2. Check for the already converted 'uc' link (just in case)
