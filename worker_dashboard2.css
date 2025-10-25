@@ -1,0 +1,242 @@
+/* General Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: #f7f3ed; /* Light beige/cream background */
+    color: #333;
+    line-height: 1.6;
+}
+/* --- Add this to your worker_dashboard2.css file --- */
+
+/* 1. Set up the main container to use a grid */
+.job-listings {
+    display: grid;
+    /* This creates a minimum of two columns on wide screens, 
+       automatically fitting as many columns as possible. */
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px; /* Space between the cards */
+    padding: 20px 0;
+}
+
+/* 2. Style the individual job card for the aesthetic */
+.job-card {
+    background-color: #ffffff; /* White card background */
+    border: 1px solid #e0d9cf; /* Soft border */
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex; /* Helps align content inside the card */
+    flex-direction: column;
+}
+
+.job-card:hover {
+    transform: translateY(-5px); /* Subtle lift effect */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.job-card h3 {
+    font-family: 'Poppins', sans-serif;
+    color: #8b7454; /* Deep beige/gold heading */
+    font-size: 1.4rem;
+    margin-top: 0;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #e0d9cf;
+    padding-bottom: 10px;
+}
+
+.job-card p {
+    color: #3a332d;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.job-card .job-meta {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 0.9rem;
+}
+
+.job-card .job-meta p strong {
+    font-weight: 700;
+    color: #70685e;
+}
+
+.job-card .apply-button {
+    margin-top: auto; /* Pushes the button to the bottom */
+    padding: 10px 15px;
+    background-color: #cfa874; /* Lighter beige/gold button */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.job-card .apply-button:hover {
+    background-color: #8b7454; /* Darker accent on hover */
+}
+
+/* Ensure the icon is placed nicely */
+.icon-right {
+    margin-left: 10px;
+    color: #cfa874;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.header {
+    background-color: #ffffff; /* White header background */
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 2em;
+    font-weight: 700;
+    color: #5C4033; /* Darker brown for logo */
+    margin: 0;
+}
+
+.main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.main-nav ul li {
+    margin-left: 30px;
+}
+
+.main-nav ul li a {
+    text-decoration: none;
+    color: #666;
+    font-weight: 600;
+    font-size: 1.05em;
+    transition: color 0.3s ease;
+}
+
+.main-nav ul li a:hover {
+    color: #8D6E63; /* Medium brown on hover */
+}
+
+.profile-dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-icon {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #666;
+}
+
+.profile-icon img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 5px;
+    border: 2px solid #ccc;
+    object-fit: cover;
+}
+
+.profile-icon .fa-caret-down {
+    margin-left: 5px;
+    font-size: 0.9em;
+}
+
+/* Main Content - Job Listings */
+.main-content {
+    padding: 40px 0;
+}
+
+.job-listings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.job-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes icon to the right if needed */
+    position: relative;
+    border: 1px solid #f0e6da; /* Subtle border */
+}
+
+.job-card:hover {
+    transform: translateY(-8px); /* Pop out effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.job-card h3 {
+    font-size: 1.4em;
+    color: #5C4033;
+    margin-top: 0;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.job-card p {
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.job-card p strong {
+    color: #444;
+}
+
+.job-card .icon-right {
+    color: #8D6E63;
+    font-size: 1.2em;
+    margin-left: 10px; /* Space between text and icon */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .main-nav ul {
+        margin-top: 15px;
+        justify-content: center;
+    }
+
+    .main-nav ul li {
+        margin: 0 15px;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .job-listings {
+        grid-template-columns: 1fr;
+    }
+}
