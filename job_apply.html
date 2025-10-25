@@ -3,174 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employer Dashboard - Applications</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>Employer Dashboard - Job Listings & Applicants</title>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* --- SkillConnect Aesthetic Colors --- */
         :root {
-            /* Richer Beige and White Palette (Matching previous design) */
-            --primary-bg: #EAE3D2; 
-            --card-bg: #ffffff;    
-            --text-color-dark: #333333;
-            --text-color-medium: #555555;
-            --text-color-light: #777777;
-            --border-color: #D3C4A5; 
-            --accent-color-light: #A8957F; 
-            --accent-color-dark: #7B6E5B; 
-            --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.1); 
-            --status-applied: #5B7B6A; /* Muted Green */
-            --status-review: #A8957F;  /* Muted Brown */
-            --status-hired: #4CAF50;   /* Bright Green */
+            --color-primary-dark: #8b7454; 
+            --color-primary-light: #cfa874; 
+            --color-background-soft: #fbfbf7; 
+            --color-card-bg: #ffffff; 
+            --color-text-dark: #3a332d; 
+            --color-text-muted: #70685e; 
+            --color-border: #e0d9cf; 
+            --status-applied: #70685e; 
+            --status-review: #8b7454;  
+            --status-hired: #548B70;   
+            --status-rejected: #C75F60; 
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Karla', sans-serif;
+            --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.05);
+
+            /* New Color for Accept Button */
+            --button-accept: #548B70; /* Muted Green */
+            --button-contact: #3a332d; /* Dark Text Color */
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--primary-bg);
+            font-family: var(--font-body);
+            background-color: var(--color-background-soft);
+            color: var(--color-text-dark);
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             min-height: 100vh;
             box-sizing: border-box;
+            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="%23e0d9cf" fill-opacity="0.2"><path d="M0 40L40 0H20L0 20V40ZM40 40V20L20 40H40Z"/></g></svg>');
+            background-size: 40px 40px;
         }
 
         .dashboard-container {
-            background-color: var(--card-bg);
+            background-color: var(--color-card-bg);
             width: 100%;
             max-width: 1000px;
             min-height: 100vh;
             box-shadow: var(--shadow-light);
-            border-left: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color);
+            border-left: 1px solid var(--color-border);
+            border-right: 1px solid var(--color-border);
             padding: 40px;
         }
 
         h1.dashboard-title {
-            font-size: 2.2em;
-            color: var(--text-color-dark);
+            font-family: var(--font-heading);
+            font-size: 2.5em;
+            color: var(--color-primary-dark);
             margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--accent-color-light);
-            font-weight: 500;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--color-primary-light);
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .section-title {
-            font-size: 1.5em;
-            color: var(--text-color-dark);
-            margin-top: 30px;
+            font-family: var(--font-heading);
+            font-size: 1.8em;
+            color: var(--color-text-dark);
+            margin-top: 40px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        /* --- Job Card Styling --- */
+        .job-listing {
             margin-bottom: 20px;
-            font-weight: 500;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            background-color: #fcfcfc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            overflow: hidden;
         }
 
-        /* --- Application List Styling --- */
-        .application-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .application-card {
+        .job-summary-card {
             display: flex;
             align-items: center;
-            padding: 15px 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background-color: #f9f9f9;
+            padding: 18px 25px;
+            cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            background-color: #ffffff;
         }
 
-        .application-card:hover {
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transform: translateY(-2px);
+        .job-summary-card:hover {
+            background-color: var(--color-background-soft);
         }
 
-        .worker-photo {
+        .job-icon {
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            object-fit: cover;
-            margin-right: 20px;
-            border: 2px solid var(--accent-color-light);
+            background-color: var(--color-primary-light);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-right: 25px;
             flex-shrink: 0;
+            border: 3px solid var(--color-primary-dark);
         }
 
-        .application-details {
+        .job-details {
             flex-grow: 1;
         }
 
-        .worker-name {
-            font-size: 1.2em;
+        .job-title {
+            font-size: 1.3em;
             font-weight: 700;
-            color: var(--accent-color-dark);
+            color: var(--color-primary-dark);
             margin: 0;
         }
 
-        .job-title {
-            font-size: 0.95em;
-            color: var(--text-color-medium);
+        .job-info {
+            font-size: 1em;
+            color: var(--color-text-muted);
             margin: 5px 0 0;
         }
 
-        .application-status {
-            font-weight: 700;
-            padding: 5px 12px;
-            border-radius: 4px;
+        .applicant-count {
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 20px;
             font-size: 0.85em;
+            background-color: var(--status-review);
             color: white;
-            text-transform: uppercase;
-            min-width: 100px;
+            min-width: 120px;
             text-align: center;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
         }
 
-        /* Status Colors */
-        .status-Applied {
-            background-color: var(--status-applied);
+        /* --- Applicant List (Collapsible Content) --- */
+        .applicant-list-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            border-top: 1px solid var(--color-border);
+            background-color: #f9f9f9;
         }
-        .status-UnderReview {
-            background-color: var(--status-review);
+
+        .job-listing.open .applicant-list-container {
+            max-height: 500px; 
+            transition: max-height 0.6s ease-in;
         }
-        .status-Hired {
-            background-color: var(--status-hired);
+
+        .applicant-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            border-bottom: 1px solid var(--color-border);
+            text-decoration: none;
+            color: inherit;
+            transition: background-color 0.15s;
         }
-        .status-Rejected {
-            background-color: #F44336; /* Red */
+        .applicant-item:hover {
+            background-color: #f0f0f0;
+        }
+        .applicant-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Hides non-accepted workers after one is accepted */
+        .job-listing.worker-accepted .applicant-item:not(.accepted) {
+            display: none;
+        }
+        .job-listing.worker-accepted .applicant-item.accepted {
+            border-bottom: none; /* Clean up the border for the single remaining item */
+        }
+
+
+        .applicant-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid var(--color-primary-light);
+        }
+
+        .applicant-details {
+            flex-grow: 1;
+        }
+
+        .applicant-name {
+            font-weight: 600;
+            color: var(--color-text-dark);
+            margin: 0;
+        }
+
+        .applicant-status {
+            font-size: 0.9em;
+            color: var(--color-text-muted);
         }
         
+        /* --- Button Group Container --- */
+        .applicant-actions {
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            flex-shrink: 0;
+        }
+
+        /* Base Button Styling (for all actions) */
+        .action-button {
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.2s;
+            cursor: pointer;
+            text-align: center;
+            border: none;
+            text-decoration: none; /* For the View Profile link */
+        }
+
+        /* Specific style for View Profile (Link) */
+        .view-profile-link {
+            background-color: var(--color-primary-light);
+            color: var(--color-text-dark);
+            border: 1px solid var(--color-primary-dark);
+        }
+        .view-profile-link:hover {
+            background-color: var(--color-primary-dark);
+            color: white;
+            border-color: var(--color-primary-dark);
+        }
+
+        /* Specific style for Accept (Button) */
+        .accept-button {
+            background-color: var(--button-accept);
+            color: white;
+            border: 1px solid var(--button-accept);
+        }
+        .accept-button:hover {
+            background-color: #437158; 
+        }
+
+        /* Specific style for Contact Button (after acceptance) */
+        .contact-button {
+            background-color: var(--color-text-dark);
+            color: white;
+            border: 1px solid var(--color-text-dark);
+        }
+        .contact-button:hover {
+            background-color: var(--color-primary-dark);
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            .dashboard-container {
-                padding: 20px;
-                border-left: none;
-                border-right: none;
-                box-shadow: none;
-            }
-            .application-card {
+            .applicant-actions {
                 flex-direction: column;
-                align-items: flex-start;
-            }
-            .worker-photo {
-                margin-bottom: 10px;
-            }
-            .application-status {
-                margin-top: 10px;
-                align-self: flex-end; /* Puts status on the right on small screens */
+                gap: 5px;
             }
         }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
-        <h1 class="dashboard-title">My Job</h1>
+        <h1 class="dashboard-title">My Job Listings</h1>
 
-        <div class="application-section">
-            <h2 class="section-title">Pending Applications</h2>
-            <div class="application-list" id="pendingApplications">
-                </div>
-        </div>
-
-        <div class="application-section">
-            <h2 class="section-title">Completed Applications</h2>
-            <div class="application-list" id="completedApplications">
+        <div class="job-section">
+            <h2 class="section-title">Active Job Posts</h2>
+            <div class="job-list" id="jobListContainer">
                 </div>
         </div>
     </div>
@@ -178,114 +280,263 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            // --- SIMULATED DATA (Replace with real server API calls later) ---
-            const mockApplications = [
+            // --- RESTRUCTURED DATA: Job-centric approach ---
+            const mockJobs = [
                 {
                     id: 1,
-                    workerName: "Priya Sharma",
-                    job: "Custom Bridal Wear Order",
-                    status: "UnderReview",
-                    photo: "https://via.placeholder.com/60/A8957F/ffffff?text=PS",
-                    link: "#" // Link to worker profile
+                    title: "Custom Bridal Wear Order",
+                    location: "Banjara Hills, Hyderabad",
+                    skill: "Tailoring/Fashion Design",
+                    contactEmail: "employer@example.com",
+                    applicants: [
+                        { id: 'app_1', name: "Priya Sharma", status: "Under Review", photo: "https://via.placeholder.com/40/cfa874/ffffff?text=PS", profileId: "priya_s", contactLink: "mailto:priya@worker.com" },
+                        { id: 'app_2', name: "Anjali Varma", status: "Applied", photo: "https://via.placeholder.com/40/8b7454/ffffff?text=AV", profileId: "anjali_v", contactLink: "tel:9988776655" }
+                    ]
                 },
                 {
                     id: 2,
-                    workerName: "Rajesh Kumar",
-                    job: "Office Furniture Assembly",
-                    status: "Applied",
-                    photo: "https://via.placeholder.com/60/7B6E5B/ffffff?text=RK",
-                    link: "#"
+                    title: "Office Furniture Assembly",
+                    location: "Gachibowli, Hyderabad",
+                    skill: "Handyman/Assembly",
+                    contactEmail: "employer@example.com",
+                    applicants: [
+                        { id: 'app_3', name: "Rajesh Kumar", status: "Applied", photo: "https://via.placeholder.com/40/8b7454/ffffff?text=RK", profileId: "rajesh_k", contactLink: "mailto:rajesh@worker.com" },
+                        { id: 'app_4', name: "Brijesh Singh", status: "Under Review", photo: "https://via.placeholder.com/40/cfa874/ffffff?text=BS", profileId: "brijesh_s", contactLink: "tel:1122334455" },
+                        { id: 'app_5', name: "Sunil Das", status: "Applied", photo: "https://via.placeholder.com/40/70685e/ffffff?text=SD", profileId: "sunil_d", contactLink: "mailto:sunil@worker.com" }
+                    ]
                 },
                 {
                     id: 3,
-                    workerName: "Sana Khan",
-                    job: "Leaky Faucet Repair (Urgent)",
-                    status: "Hired",
-                    photo: "https://via.placeholder.com/60/5B7B6A/ffffff?text=SK",
-                    link: "#"
-                },
-                {
-                    id: 4,
-                    workerName: "Vikram Reddy",
-                    job: "Garden Maintenance Contract",
-                    status: "Rejected",
-                    photo: "https://via.placeholder.com/60/D3C4A5/333333?text=VR",
-                    link: "#"
+                    title: "Leaky Faucet Repair (Urgent)",
+                    location: "Kondapur, Hyderabad",
+                    skill: "Plumbing",
+                    contactEmail: "employer@example.com",
+                    applicants: [
+                        // Sana Khan is already Hired in the mock data, so this will demonstrate the 'Hired' state immediately
+                        { id: 'app_6', name: "Sana Khan", status: "Applied", photo: "https://via.placeholder.com/40/548B70/ffffff?text=SK", profileId: "sana_k", contactLink: "tel:5551112222" },
+                        
+                        { id: 'app_7', name: "Gopal Vatti", status: "Applied", photo: "https://via.placeholder.com/40/70685e/ffffff?text=GV", profileId: "gopal_v", contactLink: "mailto:gopal@worker.com" },
+                        { id: 'app_8', name: "Harish Naik", status: "Applied", photo: "https://via.placeholder.com/40/8b7454/ffffff?text=HN", profileId: "harish_n", contactLink: "tel:7778889999" },
+                        { id: 'app_9', name: "Jaya Devi", status: "Under Review", photo: "https://via.placeholder.com/40/cfa874/ffffff?text=JD", profileId: "jaya_d", contactLink: "mailto:jaya@worker.com" },
+                        { id: 'app_10', name: "Kiran Goud", status: "Applied", photo: "https://via.placeholder.com/40/70685e/ffffff?text=KG", profileId: "kiran_g", contactLink: "tel:6665554444" }
+                    ]
                 }
             ];
             // -----------------------------------------------------------------
 
+            const jobListContainer = document.getElementById('jobListContainer');
+            
+            // Function to find the job object by its ID
+            function findJob(jobId) {
+                return mockJobs.find(job => job.id === jobId);
+            }
 
-            const pendingContainer = document.getElementById('pendingApplications');
-            const completedContainer = document.getElementById('completedApplications');
-
-            function createApplicationCard(app) {
-                const card = document.createElement('a');
-                card.href = app.link; // Makes the whole card clickable
-                card.classList.add('application-card');
-
-                // 1. Worker Photo
-                const photo = document.createElement('img');
-                photo.src = app.photo;
-                photo.alt = app.workerName;
-                photo.classList.add('worker-photo');
-
-                // 2. Details (Name and Job)
-                const details = document.createElement('div');
-                details.classList.add('application-details');
+            // --- Function to handle the acceptance logic ---
+            function handleAccept(applicantId, workerName, jobId) {
+                alert(`SUCCESS! You have accepted ${workerName}. All other applicants for this job are now hidden.`);
                 
-                const name = document.createElement('p');
-                name.classList.add('worker-name');
-                name.textContent = app.workerName;
+                const jobListingElement = document.querySelector(`.job-listing[data-job-id="${jobId}"]`);
+                const acceptedApplicantElement = document.querySelector(`.applicant-item[data-applicant-id="${applicantId}"]`);
+                
+                if (jobListingElement && acceptedApplicantElement) {
+                    // 1. Mark the job as having an accepted worker
+                    jobListingElement.classList.add('worker-accepted');
+                    
+                    // 2. Mark the accepted worker
+                    acceptedApplicantElement.classList.add('accepted');
+                    
+                    // 3. Update the accepted worker's status text and color
+                    const applicantStatusElement = acceptedApplicantElement.querySelector('.applicant-status');
+                    if (applicantStatusElement) {
+                         applicantStatusElement.textContent = 'Status: Hired';
+                         applicantStatusElement.style.color = 'var(--button-accept)';
+                    }
+                    
+                    // 4. Clear existing buttons and add the Contact button
+                    const actionsContainer = acceptedApplicantElement.querySelector('.applicant-actions');
+                    if (actionsContainer) {
+                        actionsContainer.innerHTML = '';
+                        
+                        const job = findJob(jobId);
+                        const acceptedApplicant = job.applicants.find(app => app.id === applicantId);
+                        
+                        if (acceptedApplicant && acceptedApplicant.contactLink) {
+                            const contactButton = document.createElement('a');
+                            contactButton.href = acceptedApplicant.contactLink;
+                            contactButton.classList.add('action-button', 'contact-button');
+                            contactButton.textContent = 'Contact';
+                            actionsContainer.appendChild(contactButton);
+                        }
+                    }
+                    
+                    // 5. Update the applicant count display
+                    const countElement = jobListingElement.querySelector('.applicant-count');
+                    if (countElement) {
+                        countElement.textContent = 'Hired (1 Applicant)';
+                        countElement.style.backgroundColor = 'var(--button-accept)';
+                    }
+                }
+            }
 
-                const job = document.createElement('p');
-                job.classList.add('job-title');
-                job.textContent = `Applied for: ${app.job}`;
+            // --- Function to create the applicant item DOM ---
+            function createApplicantItem(applicant, jobId) {
+                const item = document.createElement('div'); 
+                item.classList.add('applicant-item');
+                item.dataset.applicantId = applicant.id;
+
+                // If the applicant is already marked as Hired in the data, mark them as accepted visually.
+                if (applicant.status === 'Hired') {
+                    item.classList.add('accepted');
+                }
+
+
+                const photo = document.createElement('img');
+                photo.src = applicant.photo;
+                photo.alt = applicant.name;
+                photo.classList.add('applicant-photo');
+
+                const details = document.createElement('div');
+                details.classList.add('applicant-details');
+
+                const name = document.createElement('p');
+                name.classList.add('applicant-name');
+                name.textContent = applicant.name;
+
+                const status = document.createElement('p');
+                status.classList.add('applicant-status');
+                status.textContent = `Status: ${applicant.status.replace(/([A-Z])/g, ' $1').trim()}`;
+                
+                // Initial status coloring for "Hired" from mock data
+                if (applicant.status === 'Hired') {
+                     status.style.color = 'var(--button-accept)';
+                }
+
 
                 details.appendChild(name);
-                details.appendChild(job);
+                details.appendChild(status);
 
-                // 3. Status Badge
-                const status = document.createElement('span');
-                status.classList.add('application-status', `status-${app.status}`);
-                
-                // Format status for display (e.g., "UnderReview" -> "Under Review")
-                status.textContent = app.status.replace(/([A-Z])/g, ' $1').trim();
+                // --- Button Container ---
+                const actions = document.createElement('div');
+                actions.classList.add('applicant-actions');
 
-                // Append all elements to the card
-                card.appendChild(photo);
-                card.appendChild(details);
-                card.appendChild(status);
+                if (applicant.status === 'Hired') {
+                    // Show Contact button if already Hired
+                    const contactButton = document.createElement('a');
+                    contactButton.href = applicant.contactLink;
+                    contactButton.classList.add('action-button', 'contact-button');
+                    contactButton.textContent = 'Contact';
+                    actions.appendChild(contactButton);
 
-                return card;
+                } else if (applicant.status !== 'Rejected') {
+                    // Show View Profile and Accept button for other statuses
+                    
+                    // 1. View Profile Button (Link)
+                    const viewLink = document.createElement('a');
+                    viewLink.href = `worker_profile.html?id=${applicant.profileId}`;
+                    viewLink.classList.add('action-button', 'view-profile-link');
+                    viewLink.textContent = 'View Profile'; 
+                    viewLink.target = '_blank'; 
+                    actions.appendChild(viewLink);
+                    
+                    // 2. Accept Button
+                    const acceptButton = document.createElement('button');
+                    acceptButton.classList.add('action-button', 'accept-button');
+                    acceptButton.textContent = 'Accept';
+                    acceptButton.onclick = (e) => {
+                        e.stopPropagation();
+                        handleAccept(applicant.id, applicant.name, jobId);
+                    };
+                    actions.appendChild(acceptButton);
+                }
+
+                item.appendChild(photo);
+                item.appendChild(details);
+                item.appendChild(actions);
+
+                return item;
             }
 
-            // Function to render applications into the dashboard sections
-            function renderApplications() {
-                // Clear existing content
-                pendingContainer.innerHTML = '';
-                completedContainer.innerHTML = '';
+            // --- Function to render all job listings ---
+            function createJobListingCard(job) {
+                const jobListing = document.createElement('div');
+                jobListing.classList.add('job-listing');
+                jobListing.dataset.jobId = job.id; 
 
-                mockApplications.forEach(app => {
-                    const card = createApplicationCard(app);
-                    
-                    if (app.status === 'Applied' || app.status === 'UnderReview') {
-                        pendingContainer.appendChild(card);
-                    } else if (app.status === 'Hired' || app.status === 'Rejected') {
-                        completedContainer.appendChild(card);
-                    }
+                const summaryCard = document.createElement('div');
+                summaryCard.classList.add('job-summary-card');
+                summaryCard.onclick = () => jobListing.classList.toggle('open');
+
+                const icon = document.createElement('div');
+                icon.classList.add('job-icon');
+                icon.textContent = job.skill.substring(0, 2); 
+
+                const details = document.createElement('div');
+                details.classList.add('job-details');
+                
+                const title = document.createElement('p');
+                title.classList.add('job-title');
+                title.textContent = job.title;
+
+                const info = document.createElement('p');
+                info.classList.add('job-info');
+                info.textContent = `${job.skill} • ${job.location}`;
+
+                details.appendChild(title);
+                details.appendChild(info);
+
+                const count = document.createElement('span');
+                count.classList.add('applicant-count');
+                
+                // Check if any worker is already hired in the mock data
+                const hiredApplicant = job.applicants.find(app => app.status === 'Hired');
+                if (hiredApplicant) {
+                    count.textContent = 'Hired (1 Applicant)';
+                    count.style.backgroundColor = 'var(--button-accept)';
+                    jobListing.classList.add('worker-accepted');
+                } else {
+                    count.textContent = `${job.applicants.length} Applicant${job.applicants.length !== 1 ? 's' : ''}`;
+                }
+
+
+                summaryCard.appendChild(icon);
+                summaryCard.appendChild(details);
+                summaryCard.appendChild(count);
+                jobListing.appendChild(summaryCard);
+
+                const applicantsContainer = document.createElement('div');
+                applicantsContainer.classList.add('applicant-list-container');
+
+                if (job.applicants.length === 0) {
+                    const noApplicants = document.createElement('p');
+                    noApplicants.style.padding = '15px 25px';
+                    noApplicants.style.color = 'var(--color-text-muted)';
+                    noApplicants.textContent = 'No applicants for this job yet.';
+                    applicantsContainer.appendChild(noApplicants);
+                } else {
+                    job.applicants.forEach(applicant => {
+                        // Pass job ID to the applicant item function
+                        applicantsContainer.appendChild(createApplicantItem(applicant, job.id)); 
+                    });
+                }
+
+                jobListing.appendChild(applicantsContainer);
+
+                return jobListing;
+            }
+
+            function renderJobDashboard() {
+                jobListContainer.innerHTML = '';
+
+                mockJobs.forEach(job => {
+                    jobListContainer.appendChild(createJobListingCard(job));
                 });
 
-                // Display a message if no applications are found in a section
-                if (pendingContainer.children.length === 0) {
-                    pendingContainer.innerHTML = '<p style="color:var(--text-color-light); padding: 10px 0;">No new applications are currently under review.</p>';
-                }
-                if (completedContainer.children.length === 0) {
-                    completedContainer.innerHTML = '<p style="color:var(--text-color-light); padding: 10px 0;">No applications have been processed yet.</p>';
+                if (mockJobs.length === 0) {
+                    jobListContainer.innerHTML = '<p style="color:var(--color-text-muted); padding: 10px 0;">You have no active job posts.</p>';
                 }
             }
 
-            renderApplications(); // Initial rendering of the dashboard
+            renderJobDashboard(); 
         });
     </script>
 </body>
