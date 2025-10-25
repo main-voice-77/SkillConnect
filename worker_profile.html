@@ -318,6 +318,58 @@
             transform: translateY(-2px);
             transition: all 0.2s ease-in-out;
         }
+        
+        /* --- NEW: Reviews & Ratings Styles --- */
+        .reviews-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .review-card {
+            padding: 15px;
+            background-color: var(--color-background-soft);
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .review-employer {
+            font-weight: 600;
+            color: var(--color-primary-dark);
+            font-size: 1.1em;
+        }
+
+        .review-date {
+            font-size: 0.85em;
+            color: var(--color-text-muted);
+        }
+
+        .star-rating {
+            font-size: 1.2em;
+            color: #FFC700; /* Star yellow color */
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        
+        .star-rating .unfilled {
+            color: var(--color-border);
+        }
+
+        .review-text {
+            font-style: italic;
+            color: var(--color-text-dark);
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -418,6 +470,49 @@
                     </div>
                 </div>
 
+                <div class="content-section">
+                    <h2 class="section-title">Recent Reviews</h2>
+                    <div class="reviews-container">
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="review-employer">Designer Boutique 'The Weave'</span>
+                                <span class="review-date">October 2025</span>
+                            </div>
+                            <div class="star-rating">
+                                ★★★★★
+                            </div>
+                            <p class="review-text">
+                                "Priya is an exceptional talent. She managed a complex bridal alteration project under a tight deadline with flawless precision. Her fabric knowledge and commitment to detail are unmatched. Will absolutely hire again."
+                            </p>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="review-employer">Mr. Rohan Patel (Individual Client)</span>
+                                <span class="review-date">September 2025</span>
+                            </div>
+                            <div class="star-rating">
+                                ★★★★<span class="unfilled">★</span>
+                            </div>
+                            <p class="review-text">
+                                "Had a custom suit made. The fit is perfect, truly bespoke work. Communication was clear throughout. Project was delivered a day later than planned, but the quality made up for the slight delay."
+                            </p>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="review-employer">Local Fashion School (Contract)</span>
+                                <span class="review-date">July 2025</span>
+                            </div>
+                            <div class="star-rating">
+                                ★★★★★
+                            </div>
+                            <p class="review-text">
+                                "Excellent work on batch production for our student fashion show. Priya's efficiency in pattern grading and bulk stitching was a massive help. Reliable and highly professional."
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 <div class="content-section no-border">
                     <h2 class="section-title">My Work Gallery</h2>
                     <div class="gallery-upload-area">
@@ -425,6 +520,10 @@
                         <button id="uploadImageBtn">Upload Image</button>
                     </div>
                     <div class="gallery-grid" id="workGalleryGrid">
+                        <div class="gallery-item"><img src="https://via.placeholder.com/200/a38e6e/ffffff?text=Bridal+Wear" alt="Bridal Wear"></div>
+                        <div class="gallery-item"><img src="https://via.placeholder.com/200/cfa874/3a332d?text=Custom+Suit" alt="Custom Suit"></div>
+                        <div class="gallery-item"><img src="https://via.placeholder.com/200/8b7454/ffffff?text=Alterations" alt="Alterations"></div>
+                        <div class="gallery-item"><img src="https://via.placeholder.com/200/8b7454/ffffff?text=Embroidery" alt="Embroidery"></div>
                         </div>
                 </div>
             </div>
@@ -465,7 +564,7 @@
                 if (matchView && matchView[1]) {
                     const fileId = matchView[1];
                     // The 'uc?export=view&id=' format is the most reliable for direct image embeds
-                    return `https://drive.google.com/uc?export=view&id=${fileId}`;
+                    return 'https://drive.google.com/uc?export=view&id=${fileId}';
                 }
 
                 // 2. Check for the already converted 'uc' link (just in case)
