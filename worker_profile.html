@@ -3,42 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Worker Profile - Enhanced</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>Worker Profile - SkillConnect Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Karla:wght=400;600&display=swap" rel="stylesheet">
     <style>
+        /* 🎨 SkillConnect Aesthetic Styles applied to the Worker Profile */
         :root {
-            /* Richer Beige and White Palette (UNCHANGED) */
-            --primary-bg: #EAE3D2; /* Darker, warmer beige for background */
-            --card-bg: #ffffff;    /* Pure white for cards */
-            --text-color-dark: #333333;
-            --text-color-medium: #555555;
-            --text-color-light: #777777;
-            --border-color: #D3C4A5; /* A slightly darker, earthy beige for subtle borders */
-            --accent-color-light: #A8957F; /* Muted, warm brown-beige for icons/subtle accents */
-            --accent-color-dark: #7B6E5B; /* Deeper, more saturated brown-beige for links/emphasis */
-            --cover-bg-placeholder: #BEB4A1; /* A mid-tone beige for cover photo placeholder */
-            --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slightly more prominent shadow for depth */
+            /* Primary Color Palette from Employer Form */
+            --color-primary-dark: #8b7454; /* Main Accent Brown */
+            --color-primary-light: #cfa874; /* Secondary Accent Beige */
+            --color-background-soft: #fbfbf7; /* Soft Page Background */
+            --color-card-bg: #ffffff;      /* White Card Background */
+            --color-text-dark: #3a332d;    /* Dark Text */
+            --color-text-muted: #70685e;   /* Muted/Secondary Text */
+            --color-border: #e0d9cf;       /* Light Border */
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Karla', sans-serif;
+
+            /* Retained for generic shadows, matching the tone */
+            --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.05); 
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--primary-bg);
+            font-family: var(--font-body);
+            background-color: var(--color-background-soft);
+            color: var(--color-text-dark);
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             min-height: 100vh;
             box-sizing: border-box;
+            line-height: 1.6;
+            /* Applying the same subtle background pattern */
+            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="%23e0d9cf" fill-opacity="0.2"><path d="M0 40L40 0H20L0 20V40ZM40 40V20L20 40H40Z"/></g></svg>');
+            background-size: 40px 40px;
         }
 
         .page-content-wrapper {
-            background-color: var(--card-bg);
+            background-color: var(--color-card-bg);
             width: 100%;
             max-width: 1200px;
             min-height: 100vh;
-            box-shadow: var(--shadow-light);
-            border-left: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color);
+            box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.05); /* Enhanced shadow */
+            border-left: 1px solid var(--color-border);
+            border-right: 1px solid var(--color-border);
             display: flex;
             flex-direction: column;
             padding: 40px;
@@ -47,7 +55,7 @@
         /* --- Header Section --- */
         .profile-header-section {
             padding-bottom: 30px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--color-border); /* New border color */
             position: relative;
             display: flex;
             align-items: flex-start;
@@ -58,7 +66,7 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            background-color: var(--card-bg);
+            background-color: var(--color-card-bg);
             padding: 5px;
             flex-shrink: 0;
             margin-right: 35px;
@@ -70,7 +78,7 @@
             height: 100%;
             border-radius: 50%;
             overflow: hidden;
-            border: 3px solid var(--accent-color-light);
+            border: 3px solid var(--color-primary-light); /* New accent color */
         }
         .profile-image {
             width: 100%;
@@ -78,62 +86,58 @@
             object-fit: cover;
         }
 
-        .profile-info {
-            flex-grow: 1;
-            text-align: left;
-            padding-top: 10px;
-        }
-
         .profile-name {
+            font-family: var(--font-heading); /* NEW FONT */
             font-size: 2.5em;
-            color: var(--text-color-dark);
+            color: var(--color-primary-dark); /* NEW COLOR */
             margin-bottom: 5px;
-            font-weight: 500;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .profile-profession {
             font-size: 1.2em;
-            color: var(--text-color-medium);
+            color: var(--color-text-muted); /* NEW COLOR */
             margin-bottom: 15px;
             font-weight: 400;
         }
 
         .profile-location {
             font-size: 1em;
-            color: var(--text-color-light);
+            color: var(--color-text-muted); /* NEW COLOR */
             display: flex;
             align-items: center;
             gap: 8px;
             margin-bottom: 0;
         }
         .profile-location svg {
-            fill: var(--accent-color-light);
+            fill: var(--color-primary-light); /* NEW ACCENT COLOR */
             width: 18px;
             height: 18px;
         }
 
-        /* --- Progress Bar Section (New) --- */
+        /* --- Progress Bar Section --- */
         .progress-section {
-            margin-bottom: 30px; /* Space below progress bar */
+            margin-bottom: 30px; 
             padding-bottom: 30px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--color-border); /* New border color */
         }
 
-        .worker-level-text { /* NEW STYLE */
+        .worker-level-text { 
             font-size: 1.1em;
-            color: var(--text-color-medium);
-            margin-bottom: 15px; /* Space between text and bar */
-            font-weight: 500;
+            color: var(--color-text-muted); /* New medium color */
+            margin-bottom: 15px; 
+            font-weight: 600; /* Adjusted weight */
         }
 
-        .worker-level-text .current-level-display { /* NEW STYLE */
-            color: var(--accent-color-dark);
+        .worker-level-text .current-level-display { 
+            color: var(--color-primary-dark); /* NEW ACCENT COLOR */
             font-weight: 700;
         }
 
         .progress-bar-container {
             width: 100%;
-            background-color: #f0f0f0;
+            background-color: #eee;
             border-radius: 10px;
             overflow: hidden;
             height: 20px;
@@ -143,8 +147,8 @@
 
         .progress-bar-fill {
             height: 100%;
-            width: 50%; /* Example: 50% for Intermediate */
-            background-color: var(--accent-color-light);
+            width: 50%; 
+            background-color: var(--color-primary-light); /* NEW ACCENT COLOR */
             border-radius: 10px;
             transition: width 0.5s ease-in-out;
         }
@@ -153,17 +157,17 @@
             display: flex;
             justify-content: space-between;
             font-size: 0.9em;
-            color: var(--text-color-medium);
-            position: relative; /* For the current level indicator */
-            height: 20px; /* To prevent overlap with fill */
+            color: var(--color-text-muted); /* New medium color */
+            position: relative; 
+            height: 20px; 
         }
 
         .progress-labels span {
-            position: absolute; /* Position labels precisely */
+            position: absolute; 
             transform: translateX(-50%);
             top: 0;
-            font-weight: 500;
-            color: var(--text-color-medium);
+            font-weight: 600;
+            color: var(--color-text-muted);
         }
 
         /* Positioning for each label */
@@ -173,12 +177,12 @@
         .progress-labels .pro { left: 100%; transform: translateX(-100%); }
 
         .progress-labels .current-level {
-            color: var(--accent-color-dark);
+            color: var(--color-primary-dark); /* NEW ACCENT COLOR */
             font-weight: 700;
         }
 
 
-        /* --- Main Content Area (Two Columns) --- */
+        /* --- Main Content Area --- */
         .main-content-area {
             display: flex;
             gap: 40px;
@@ -198,57 +202,44 @@
             padding-bottom: 20px;
         }
         .content-section:not(:last-child) {
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--color-border); /* New border color */
         }
-        .content-section.no-border {
-            border-bottom: none;
-        }
-
-
         .section-title {
+            font-family: var(--font-heading); /* NEW FONT */
             font-size: 1.5em;
-            color: var(--text-color-dark);
+            color: var(--color-primary-dark); /* NEW COLOR */
             margin-bottom: 20px;
-            font-weight: 500;
+            font-weight: 700;
         }
 
         .profile-bio p {
             font-size: 1em;
-            color: var(--text-color-medium);
+            color: var(--color-text-dark); /* New darker text for main content */
             line-height: 1.6;
             margin-bottom: 12px;
         }
-        .profile-bio p:last-child {
-            margin-bottom: 0;
-        }
-
-
+        
         .contact-item {
             display: flex;
             align-items: center;
             margin-bottom: 12px;
             font-size: 1em;
-            color: var(--text-color-medium);
-        }
-        .contact-item:last-child {
-            margin-bottom: 0;
+            color: var(--color-text-dark); /* New darker text for readability */
         }
         .contact-item svg {
-            fill: var(--accent-color-light);
+            fill: var(--color-primary-light); /* NEW ACCENT COLOR */
             width: 20px;
             height: 20px;
             margin-right: 15px;
             flex-shrink: 0;
         }
         .contact-item a {
-            color: var(--accent-color-dark);
+            color: var(--color-primary-dark); /* NEW ACCENT COLOR */
             text-decoration: none;
+            font-weight: 600;
         }
-        .contact-item a:hover {
-            text-decoration: underline;
-        }
-
-        /* --- Gallery Section --- */
+        
+        /* --- Gallery Section (Upload Area) --- */
         .gallery-upload-area {
             display: flex;
             gap: 10px;
@@ -259,47 +250,58 @@
 
         .gallery-upload-area input[type="text"] {
             flex-grow: 1;
-            padding: 10px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            font-size: 0.95em;
-            color: var(--text-color-dark);
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            padding: 12px 18px; /* Matched form padding */
+            border: 1px solid var(--color-border);
+            border-radius: 4px; /* Matched form radius */
+            font-size: 1rem;
+            color: var(--color-text-dark);
+            background-color: var(--color-background-soft);
+            box-shadow: none; /* Removed old shadow */
             min-width: 200px;
+            transition: all 0.3s ease;
+        }
+        .gallery-upload-area input[type="text"]:focus {
+            border-color: var(--color-primary-light);
+            box-shadow: 0 0 0 2px rgba(207, 168, 116, 0.5);
+            background-color: var(--color-card-bg);
         }
 
         .gallery-upload-area button {
             padding: 10px 20px;
-            background-color: var(--accent-color-dark);
-            color: white;
+            background-color: var(--color-primary-dark); /* NEW ACCENT COLOR */
+            color: var(--color-card-bg); /* White text */
             border: none;
-            border-radius: 5px;
-            font-size: 0.95em;
+            border-radius: 4px;
+            font-size: 1em;
             cursor: pointer;
-            transition: background-color 0.2s ease-in-out;
-            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.15s ease;
+            font-weight: 700; /* Matched button style */
         }
 
         .gallery-upload-area button:hover {
-            background-color: #6a604f; /* Slightly darker hover */
+            background-color: var(--color-primary-light); /* NEW HOVER COLOR */
+        }
+        .gallery-upload-area button:active {
+            transform: scale(0.98);
         }
 
 
+        /* --- Gallery Grid --- */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Responsive grid */
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
             gap: 15px;
-            min-height: 150px; /* Gives some visual space when empty */
+            min-height: 150px; 
         }
 
         .gallery-item {
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--color-border);
             border-radius: 5px;
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            background-color: #f9f9f9;
+            background-color: var(--color-background-soft); /* Soft background */
             position: relative; 
-            padding-bottom: 100%; /* Creates a square aspect ratio */
+            padding-bottom: 100%; 
             height: 0; 
         }
         .gallery-item img {
@@ -312,7 +314,7 @@
             display: block;
         }
         .gallery-item:hover {
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Matched hover shadow style */
             transform: translateY(-2px);
             transition: all 0.2s ease-in-out;
         }
@@ -346,10 +348,10 @@
                 min-width: auto;
             }
             .progress-labels span {
-                font-size: 0.8em; /* Smaller labels on small screens */
+                font-size: 0.8em; 
             }
             .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Smaller grid items */
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
             }
             .gallery-upload-area {
                 flex-direction: column;
@@ -367,7 +369,7 @@
         <div class="profile-header-section">
             <div class="profile-image-wrapper">
                 <div class="profile-image-container">
-                    <img src="https://via.placeholder.com/150/A8957F/ffffff?text=Priya" alt="Worker Profile Picture" class="profile-image">
+                    <img src="https://via.placeholder.com/150/8b7454/ffffff?text=Priya" alt="Worker Profile Picture" class="profile-image">
                 </div>
             </div>
             <div class="profile-info">
@@ -392,7 +394,8 @@
                 <div class="progress-bar-fill" style="width: 50%;"></div> </div>
             <div class="progress-labels">
                 <span class="beginner">Beginner</span>
-                <span class="intermediate current-level">Intermediate</span> <span class="expert">Expert</span>
+                <span class="intermediate current-level">Intermediate</span> 
+                <span class="expert">Expert</span>
                 <span class="pro">Pro</span>
             </div>
         </div>
