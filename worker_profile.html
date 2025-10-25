@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Profile - Enhanced</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Richer Beige and White Palette (UNCHANGED) */
+            --primary-bg: #EAE3D2; /* Darker, warmer beige for background */
+            --card-bg: #ffffff;    /* Pure white for cards */
+            --text-color-dark: #333333;
+            --text-color-medium: #555555;
+            --text-color-light: #777777;
+            --border-color: #D3C4A5; /* A slightly darker, earthy beige for subtle borders */
+            --accent-color-light: #A8957F; /* Muted, warm brown-beige for icons/subtle accents */
+            --accent-color-dark: #7B6E5B; /* Deeper, more saturated brown-beige for links/emphasis */
+            --cover-bg-placeholder: #BEB4A1; /* A mid-tone beige for cover photo placeholder */
+            --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slightly more prominent shadow for depth */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--primary-bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .page-content-wrapper {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 1200px;
+            min-height: 100vh;
+            box-shadow: var(--shadow-light);
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
+        }
+
+        /* --- Header Section --- */
+        .profile-header-section {
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .profile-image-wrapper {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            padding: 5px;
+            flex-shrink: 0;
+            margin-right: 35px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .profile-image-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--accent-color-light);
+        }
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex-grow: 1;
+            text-align: left;
+            padding-top: 10px;
+        }
+
+        .profile-name {
+            font-size: 2.5em;
+            color: var(--text-color-dark);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .profile-profession {
+            font-size: 1.2em;
+            color: var(--text-color-medium);
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .profile-location {
+            font-size: 1em;
+            color: var(--text-color-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 0;
+        }
+        .profile-location svg {
+            fill: var(--accent-color-light);
+            width: 18px;
+            height: 18px;
+        }
+
+        /* --- Progress Bar Section (New) --- */
+        .progress-section {
+            margin-bottom: 30px; /* Space below progress bar */
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .worker-level-text { /* NEW STYLE */
+            font-size: 1.1em;
+            color: var(--text-color-medium);
+            margin-bottom: 15px; /* Space between text and bar */
+            font-weight: 500;
+        }
+
+        .worker-level-text .current-level-display { /* NEW STYLE */
+            color: var(--accent-color-dark);
+            font-weight: 700;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 20px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 50%; /* Example: 50% for Intermediate */
+            background-color: var(--accent-color-light);
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: var(--text-color-medium);
+            position: relative; /* For the current level indicator */
+            height: 20px; /* To prevent overlap with fill */
+        }
+
+        .progress-labels span {
+            position: absolute; /* Position labels precisely */
+            transform: translateX(-50%);
+            top: 0;
+            font-weight: 500;
+            color: var(--text-color-medium);
+        }
+
+        /* Positioning for each label */
+        .progress-labels .beginner { left: 0%; transform: translateX(0); }
+        .progress-labels .intermediate { left: 33.3%; }
+        .progress-labels .expert { left: 66.6%; }
+        .progress-labels .pro { left: 100%; transform: translateX(-100%); }
+
+        .progress-labels .current-level {
+            color: var(--accent-color-dark);
+            font-weight: 700;
+        }
+
+
+        /* --- Main Content Area (Two Columns) --- */
+        .main-content-area {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .content-column {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* General Section Styling */
+        .content-section {
+            padding-bottom: 20px;
+        }
+        .content-section:not(:last-child) {
+            border-bottom: 1px solid var(--border-color);
+        }
+        .content-section.no-border {
+            border-bottom: none;
+        }
+
+
+        .section-title {
+            font-size: 1.5em;
+            color: var(--text-color-dark);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .profile-bio p {
+            font-size: 1em;
+            color: var(--text-color-medium);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .profile-bio p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 1em;
+            color: var(--text-color-medium);
+        }
+        .contact-item:last-child {
+            margin-bottom: 0;
+        }
+        .contact-item svg {
+            fill: var(--accent-color-light);
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .contact-item a {
+            color: var(--accent-color-dark);
+            text-decoration: none;
+        }
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Gallery Section --- */
+        .gallery-upload-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .gallery-upload-area input[type="text"] {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 0.95em;
+            color: var(--text-color-dark);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            min-width: 200px;
+        }
+
+        .gallery-upload-area button {
+            padding: 10px 20px;
+            background-color: var(--accent-color-dark);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            font-weight: 500;
+        }
+
+        .gallery-upload-area button:hover {
+            background-color: #6a604f; /* Slightly darker hover */
+        }
+
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Responsive grid */
+            gap: 15px;
+            min-height: 150px; /* Gives some visual space when empty */
+        }
+
+        .gallery-item {
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            background-color: #f9f9f9;
+            position: relative; 
+            padding-bottom: 100%; /* Creates a square aspect ratio */
+            height: 0; 
+        }
+        .gallery-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            display: block;
+        }
+        .gallery-item:hover {
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .page-content-wrapper {
+                padding: 20px;
+                border-left: none;
+                border-right: none;
+                box-shadow: none;
+            }
+            .profile-header-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .profile-image-wrapper {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            .profile-info {
+                text-align: center;
+                padding-top: 0;
+            }
+            .main-content-area {
+                flex-direction: column;
+                gap: 30px;
+            }
+            .content-column {
+                min-width: auto;
+            }
+            .progress-labels span {
+                font-size: 0.8em; /* Smaller labels on small screens */
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Smaller grid items */
+            }
+            .gallery-upload-area {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .gallery-upload-area input[type="text"],
+            .gallery-upload-area button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-content-wrapper">
+        <div class="profile-header-section">
+            <div class="profile-image-wrapper">
+                <div class="profile-image-container">
+                    <img src="https://via.placeholder.com/150/A8957F/ffffff?text=Priya" alt="Worker Profile Picture" class="profile-image">
+                </div>
+            </div>
+            <div class="profile-info">
+                <h1 class="profile-name">Priya Sharma</h1>
+                <p class="profile-profession">Experienced Tailor & Fashion Designer</p>
+                <p class="profile-location">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24" fill="currentColor" class="mercado-icon" width="24" height="24" focusable="false">
+                        <path d="M12 2a8 8 0 00-8 8c0 5.4 7 11.5 7.5 11.8a1 1 0 001 0c.5-.3 7-6.4 7-11.8a8 8 0 00-8-8zm0 10a2 2 0 112-2 2 2 0 01-2 2z"></path>
+                    </svg>
+                    Bengaluru, Koramangala
+                </p>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <h2 class="section-title">Worker Level</h2>
+
+            <div class="worker-level-text">
+                <span class="current-level-display">Intermediate</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" style="width: 50%;"></div> </div>
+            <div class="progress-labels">
+                <span class="beginner">Beginner</span>
+                <span class="intermediate current-level">Intermediate</span> <span class="expert">Expert</span>
+                <span class="pro">Pro</span>
+            </div>
+        </div>
+
+        <div class="main-content-area">
+            <div class="content-column">
+                <div class="content-section">
+                    <h2 class="section-title">About</h2>
+                    <div class="profile-bio">
+                        <p>
+                            A passionate and skilled tailor with over 10 years of experience in custom clothing, alterations, and design.
+                            Dedicated to providing high-quality craftsmanship and personalized service to every client.
+                            Proficient in both traditional and contemporary styles, I excel at bringing unique fashion visions to life.
+                            My expertise includes pattern making, garment construction, and fabric selection, ensuring a perfect fit and finish every time.
+                        </p>
+                        <p>
+                            I enjoy working on diverse projects, from intricate bridal wear to everyday casuals, always focusing on durability and style.
+                            Committed to continuous learning and staying updated with the latest fashion trends and techniques.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="content-section no-border">
+                    <h2 class="section-title">My Work Gallery</h2>
+                    <div class="gallery-upload-area">
+                        <input type="text" id="gdriveLinkInput" placeholder="Paste Google Drive image link here">
+                        <button id="uploadImageBtn">Upload Image</button>
+                    </div>
+                    <div class="gallery-grid" id="workGalleryGrid">
+                        </div>
+                </div>
+            </div>
+
+            <div class="content-column">
+                <div class="content-section no-border">
+                    <h2 class="section-title">Contact Information</h2>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24" fill="currentColor" class="mercado-icon" width="24" height="24" focusable="false">
+                                <path d="M17 12a1 1 0 00-1 1v4a1 1 0 002 0v-4a1 1 0 00-1-1zm-6-2v8H9v-8a1 1 0 00-2 0v8H5v-8a1 1 0 00-2 0v8a3 3 0 003 3h4a3 3 0 003-3v-8a1 1 0 00-2 0zm10 2a1 1 0 00-1 1v4a1 1 0 002 0v-4a1 1 0 00-1-1zm-4-2v8h-2v-8a1 1 0 00-2 0v8a3 3 0 003 3h4a3 3 0 003-3v-8a1 1 0 00-2 0z"></path>
+                            </svg>
+                            <span>+91 98765 43210</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24" fill="currentColor" class="mercado-icon" width="24" height="24" focusable="false">
+                                <path d="M19.14 17.5a.69.69 0 01-.7-.5c-.32-1.3-.77-2.48-1.57-3.79a.74.74 0 01.07-.84l.87-.86a1 1 0 000-1.42L15.34 7.64a1 1 0 00-1.42 0l-.86.87a.75.75 0 01-.84.07C11.5 12.08 10.32 12.53 9 12.85a.7.7 0 01-.5.06l-1.36-.26a.71.71 0 01-.52-.8L8 8.63a1 1 0 00-1.42-1.42L5.43 8.35a.7.7 0 01-.8-.51L4.36 5.3a1 1 0 00-1-.87A.92.92 0 002.5 4.5a.7.7 0 01-.48-.5c-.1-.2-.14-.4-.14-.6A2.43 2.43 0 014 1a2.47 2.47 0 011.75.71 1 1 0 00.7.29 1 1 0 00.7-.29c.24-.25.5-.5.73-.77a.64.64 0 01.9-.06L10.5 3a1.44 1.44 0 011.41.07l1.72 1.25a.7.7 0 01.08.83l-.86.86a1 1 0 000 1.42l2.12 2.12a1 1 0 001.42 0l.86-.87a.71.71 0 01.83-.07c1.3.32 2.48.77 3.79 1.57a.74.74 0 01.84-.07l.87-.86a1 1 0 001.42 0l2.12 2.12a1 1 0 000 1.42l-.86.87a.7.7 0 01-.07.84c.32 1.3.77 2.48 1.57 3.79a.7.7 0 01.06.5l-.26 1.36a.7.7 0 01-.8.52l-2.43.47a1 1 0 00-1 .87A.92.92 0 0021.5 19.5a.7.7 0 01-.48.5c-.2.1-.4.14-.6.14a2.43 2.43 0 01-2.02-1.43 2.47 2.47 0 01-.71-1.75 1 1 0 00-.29-.7 1 1 0 00-.29-.7c-.25-.24-.5-.5-.77-.73a.64.64 0 01-.06-.9zM12.5 13.5a1 1 0 100-2 1 1 0 000 2z"></path>
+                            </svg>
+                            <span><a href="mailto:priya.sharma@example.com">priya.sharma@example.com</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadImageBtn = document.getElementById('uploadImageBtn');
+            const gdriveLinkInput = document.getElementById('gdriveLinkInput');
+            const workGalleryGrid = document.getElementById('workGalleryGrid');
+
+            // Robust function to convert Google Drive sharing link to a direct embed link
+            function getGoogleDriveDirectLink(sharingLink) {
+                // 1. Check for standard 'view' link
+                const regexView = /https:\/\/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)\/view(?:\?usp=sharing)?/;
+                const matchView = sharingLink.match(regexView);
+                if (matchView && matchView[1]) {
+                    const fileId = matchView[1];
+                    // The 'uc?export=view&id=' format is the most reliable for direct image embeds
+                    return `https://drive.google.com/uc?export=view&id=${fileId}`;
+                }
+
+                // 2. Check for the already converted 'uc' link (just in case)
+                if (sharingLink.includes('drive.google.com/uc?export=view&id=')) {
+                    return sharingLink;
+                }
+                
+                // 3. Check for direct image URLs
+                if (/\.(jpeg|jpg|gif|png|webp)$/i.test(sharingLink)) {
+                    return sharingLink;
+                }
+
+                return null; 
+            }
+
+            uploadImageBtn.addEventListener('click', function() {
+                const link = gdriveLinkInput.value.trim();
+
+                if (link) {
+                    const directLink = getGoogleDriveDirectLink(link);
+
+                    if (directLink) {
+                        const newGalleryItem = document.createElement('div');
+                        newGalleryItem.classList.add('gallery-item');
+
+                        const img = document.createElement('img');
+                        img.src = directLink;
+                        img.alt = "Uploaded Work";
+                        
+                        // Show error state if image fails to load (likely a permission issue)
+                        img.onerror = function() {
+                            // Replace the image source with a red error placeholder
+                            img.src = "https://via.placeholder.com/200/CC0000/FFFFFF?text=PERMISSION+ERROR"; 
+                            img.alt = "Image failed to load (Check Drive Share Settings)";
+                            newGalleryItem.style.backgroundColor = '#FFDDDD'; // Light red background
+                            alert("Image failed to load! Please ensure your Google Drive file is shared publicly ('Anyone with the link can view').");
+                        };
+
+                        newGalleryItem.appendChild(img);
+                        workGalleryGrid.prepend(newGalleryItem); // Use prepend to show new images first
+
+                        gdriveLinkInput.value = ''; // Clear the input field
+                    } else {
+                        alert("Invalid link. Please ensure it is a Google Drive sharing link (e.g., '.../view?usp=sharing') or a direct image URL.");
+                    }
+                } else {
+                    alert("Please paste a Google Drive link or direct image URL.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
