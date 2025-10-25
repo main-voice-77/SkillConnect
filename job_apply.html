@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer Dashboard - Applications</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Richer Beige and White Palette (Matching previous design) */
+            --primary-bg: #EAE3D2; 
+            --card-bg: #ffffff;    
+            --text-color-dark: #333333;
+            --text-color-medium: #555555;
+            --text-color-light: #777777;
+            --border-color: #D3C4A5; 
+            --accent-color-light: #A8957F; 
+            --accent-color-dark: #7B6E5B; 
+            --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.1); 
+            --status-applied: #5B7B6A; /* Muted Green */
+            --status-review: #A8957F;  /* Muted Brown */
+            --status-hired: #4CAF50;   /* Bright Green */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--primary-bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .dashboard-container {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 1000px;
+            min-height: 100vh;
+            box-shadow: var(--shadow-light);
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            padding: 40px;
+        }
+
+        h1.dashboard-title {
+            font-size: 2.2em;
+            color: var(--text-color-dark);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--accent-color-light);
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: var(--text-color-dark);
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        /* --- Application List Styling --- */
+        .application-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .application-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .application-card:hover {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .worker-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+            border: 2px solid var(--accent-color-light);
+            flex-shrink: 0;
+        }
+
+        .application-details {
+            flex-grow: 1;
+        }
+
+        .worker-name {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--accent-color-dark);
+            margin: 0;
+        }
+
+        .job-title {
+            font-size: 0.95em;
+            color: var(--text-color-medium);
+            margin: 5px 0 0;
+        }
+
+        .application-status {
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: white;
+            text-transform: uppercase;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        /* Status Colors */
+        .status-Applied {
+            background-color: var(--status-applied);
+        }
+        .status-UnderReview {
+            background-color: var(--status-review);
+        }
+        .status-Hired {
+            background-color: var(--status-hired);
+        }
+        .status-Rejected {
+            background-color: #F44336; /* Red */
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 20px;
+                border-left: none;
+                border-right: none;
+                box-shadow: none;
+            }
+            .application-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .worker-photo {
+                margin-bottom: 10px;
+            }
+            .application-status {
+                margin-top: 10px;
+                align-self: flex-end; /* Puts status on the right on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1 class="dashboard-title">My Job</h1>
+
+        <div class="application-section">
+            <h2 class="section-title">Pending Applications</h2>
+            <div class="application-list" id="pendingApplications">
+                </div>
+        </div>
+
+        <div class="application-section">
+            <h2 class="section-title">Completed Applications</h2>
+            <div class="application-list" id="completedApplications">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- SIMULATED DATA (Replace with real server API calls later) ---
+            const mockApplications = [
+                {
+                    id: 1,
+                    workerName: "Priya Sharma",
+                    job: "Custom Bridal Wear Order",
+                    status: "UnderReview",
+                    photo: "https://via.placeholder.com/60/A8957F/ffffff?text=PS",
+                    link: "#" // Link to worker profile
+                },
+                {
+                    id: 2,
+                    workerName: "Rajesh Kumar",
+                    job: "Office Furniture Assembly",
+                    status: "Applied",
+                    photo: "https://via.placeholder.com/60/7B6E5B/ffffff?text=RK",
+                    link: "#"
+                },
+                {
+                    id: 3,
+                    workerName: "Sana Khan",
+                    job: "Leaky Faucet Repair (Urgent)",
+                    status: "Hired",
+                    photo: "https://via.placeholder.com/60/5B7B6A/ffffff?text=SK",
+                    link: "#"
+                },
+                {
+                    id: 4,
+                    workerName: "Vikram Reddy",
+                    job: "Garden Maintenance Contract",
+                    status: "Rejected",
+                    photo: "https://via.placeholder.com/60/D3C4A5/333333?text=VR",
+                    link: "#"
+                }
+            ];
+            // -----------------------------------------------------------------
+
+
+            const pendingContainer = document.getElementById('pendingApplications');
+            const completedContainer = document.getElementById('completedApplications');
+
+            function createApplicationCard(app) {
+                const card = document.createElement('a');
+                card.href = app.link; // Makes the whole card clickable
+                card.classList.add('application-card');
+
+                // 1. Worker Photo
+                const photo = document.createElement('img');
+                photo.src = app.photo;
+                photo.alt = app.workerName;
+                photo.classList.add('worker-photo');
+
+                // 2. Details (Name and Job)
+                const details = document.createElement('div');
+                details.classList.add('application-details');
+                
+                const name = document.createElement('p');
+                name.classList.add('worker-name');
+                name.textContent = app.workerName;
+
+                const job = document.createElement('p');
+                job.classList.add('job-title');
+                job.textContent = `Applied for: ${app.job}`;
+
+                details.appendChild(name);
+                details.appendChild(job);
+
+                // 3. Status Badge
+                const status = document.createElement('span');
+                status.classList.add('application-status', `status-${app.status}`);
+                
+                // Format status for display (e.g., "UnderReview" -> "Under Review")
+                status.textContent = app.status.replace(/([A-Z])/g, ' $1').trim();
+
+                // Append all elements to the card
+                card.appendChild(photo);
+                card.appendChild(details);
+                card.appendChild(status);
+
+                return card;
+            }
+
+            // Function to render applications into the dashboard sections
+            function renderApplications() {
+                // Clear existing content
+                pendingContainer.innerHTML = '';
+                completedContainer.innerHTML = '';
+
+                mockApplications.forEach(app => {
+                    const card = createApplicationCard(app);
+                    
+                    if (app.status === 'Applied' || app.status === 'UnderReview') {
+                        pendingContainer.appendChild(card);
+                    } else if (app.status === 'Hired' || app.status === 'Rejected') {
+                        completedContainer.appendChild(card);
+                    }
+                });
+
+                // Display a message if no applications are found in a section
+                if (pendingContainer.children.length === 0) {
+                    pendingContainer.innerHTML = '<p style="color:var(--text-color-light); padding: 10px 0;">No new applications are currently under review.</p>';
+                }
+                if (completedContainer.children.length === 0) {
+                    completedContainer.innerHTML = '<p style="color:var(--text-color-light); padding: 10px 0;">No applications have been processed yet.</p>';
+                }
+            }
+
+            renderApplications(); // Initial rendering of the dashboard
+        });
+    </script>
+</body>
+</html>
