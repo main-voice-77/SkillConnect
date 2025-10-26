@@ -15,7 +15,6 @@
     
     <script>
         // ⚠️ USE YOUR LIVE FIREBASE PROJECT CONFIG DETAILS HERE ⚠️
-        // These are the same configuration details used for the Employer Dashboard
         const firebaseConfig = {
             apiKey: "AIzaSyD6Kn44-ilM8DoCrzUFwoVYyd4GmuDcsFE",
             authDomain: "skillconnect-f6632.firebaseapp.com",
@@ -29,6 +28,35 @@
         // Initialize Firebase and Firestore
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+
+        /**
+         * Handles the click event for the Apply button.
+         * Changes the button text and appearance for visual feedback.
+         */
+        function handleApplyClick(event) {
+            const button = event.target;
+            const jobId = button.closest('.job-card').getAttribute('data-job-id');
+
+            // 💡 Visual Feedback Update
+            button.textContent = 'Applied Successfully! ✅';
+            button.disabled = true;
+            button.style.backgroundColor = '#155724'; // Darker success color
+            button.style.cursor = 'default';
+
+            console.log(`Application submitted for Job ID: ${jobId}`);
+
+            // NOTE: In a real app, this is where you would send the worker's application data to a 'applications' collection.
+        }
+
+        /**
+         * Attaches a single event listener (delegation) to handle all dynamically created 'Apply' buttons.
+         */
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('apply-button')) {
+                handleApplyClick(event);
+            }
+        });
+
 
         /**
          * Fetches job listings from the 'jobs' collection and renders them on the page.
@@ -50,14 +78,31 @@
                     querySnapshot.forEach((doc) => {
                         const job = doc.data();
                         
-                        // Construct the main job title string
-                        const jobTitle = `${job.skill_required} (${job.skill_level})`;
+                        // --- 💡 Data Retrieval ---
+                        const rawSkill = job.job_type || 'General Work';
+                        const rawLevel = job.worker_level || 'N/A';
+                        const rawDuration = job.duration_hrs || job.job_duration || 'N/A';
+                        
+                        // FIX: Retrieving 'calculated_wage' from the database
+                        const offeredWage = job.calculated_wage; 
+                        const wageType = job.wage_type || 'Total';
+                        
+                        const offeredWageValue = parseFloat(offeredWage) || 0; 
+                        
+                        const formattedWage = offeredWageValue > 0
+                            ? `₹${offeredWageValue.toFixed(0)} (${wageType})` 
+                            : 'Not Specified';
+                        // --- 💡 End Data Retrieval ---
 
-                        // Determine an icon based on skill (simple example)
-                        let iconClass = 'fas fa-briefcase'; // Default icon
-                        if (job.skill_required.includes('Cook')) iconClass = 'fas fa-utensils';
-                        else if (job.skill_required.includes('Electrician')) iconClass = 'fas fa-bolt';
-                        else if (job.skill_required.includes('Web Development')) iconClass = 'fas fa-code';
+
+                        // Construct the main job title string
+                        const jobTitle = `${rawSkill} (Level ${rawLevel})`;
+
+                        // Determine an icon based on job_type
+                        let iconClass = 'fas fa-briefcase'; 
+                        if (rawSkill.includes('Cook')) iconClass = 'fas fa-utensils';
+                        else if (rawSkill.includes('Electrical')) iconClass = 'fas fa-bolt';
+                        else if (rawSkill.includes('Development')) iconClass = 'fas fa-code';
                         
                         // Create the HTML structure for one job card
                         const cardHTML = `
@@ -69,8 +114,9 @@
                                 <p>${job.job_statement}</p>
                                 
                                 <div class="job-meta">
+                                    <p><strong><i class="fas fa-wallet"></i> Wage:</strong> ${formattedWage}</p>
                                     <p><strong><i class="fas fa-map-marker-alt"></i> Location:</strong> ${job.job_location}</p>
-                                    <p><strong><i class="fas fa-clock"></i> Duration:</strong> ${job.job_duration}</p>
+                                    <p><strong><i class="fas fa-clock"></i> Duration:</strong> ${rawDuration} Hours</p>
                                     <p><strong><i class="fas fa-building"></i> Employer:</strong> ${job.employer_name}</p>
                                 </div>
                                 
@@ -98,15 +144,18 @@
             <h1 class="logo">SkillConnect</h1>
             <nav class="main-nav">
                 <ul>
+                    
                     <li><a href="#messages">Messages</a></li>
                     <li><a href="#history">History</a></li>
                     <li><a href="#myjobs">My Jobs</a></li>
                     <li><a href="#applications">Applications</a></li>
                     <li><a href="employer_dashboard.html" class="nav-link">Employer Posts</a></li>
+                    <button onclick="window.location.href='homepage.html';" style="background-color: #8b7454; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">Logout</button>
                     <li class="profile-dropdown">
                         <a href="#profile" class="profile-icon">
                             <img src="https://via.placeholder.com/30/808080/FFFFFF?text=DP" alt="Profile Picture">
                             <i class="fas fa-caret-down"></i>
+                            
                         </a>
                     </li>
                 </ul>
@@ -118,7 +167,7 @@
         <h2 style="font-family: 'Poppins', sans-serif; color: #3a332d; border-bottom: 2px solid #e0d9cf; padding-bottom: 10px; margin-bottom: 20px;">Available Job Listings</h2>
         
         <div class="job-listings" id="live-job-listings">
-            </div>
+        </div>
     </main>
 </body>
 </html>
