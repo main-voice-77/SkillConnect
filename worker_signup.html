@@ -1,33 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SkillConnect | Worker Registration</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Karla:wght@400;600&display=swap" rel="stylesheet">
-  
+
+  <!-- Firebase compat libs (v9 compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  
-  <script>
-    // ⚠️ FIXED: Removed the invalid 'import' statements ⚠️
-    const firebaseConfig = {
-      apiKey: "AIzaSyD6Kn44-ilM8DoCrzUFwoVYyd4GmuDcsFE",
-      authDomain: "skillconnect-f6632.firebaseapp.com",
-      projectId: "skillconnect-f6632",
-      storageBucket: "skillconnect-f6632.firebasestorage.app",
-      messagingSenderId: "462430536837",
-      appId: "1:462430536837:web:4e6a791ca9b462a29895ec",
-      measurementId: "G-VY0EH70WR9" // measurementId is optional for initialization
-    };
 
-    // Initialize Firebase and Firestore (using the v8 compatibility syntax)
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore(); // This line creates the database reference
-  </script>
-  
   <style>
-    /* ... (CSS STYLES REMAINS UNCHANGED) ... */
+    /* (your CSS unchanged) */
     :root {
       --color-primary-dark: #8b7454;
       --color-primary-light: #cfa874;
@@ -62,27 +46,25 @@
     }
 
     .site-header {
-        background-color: var(--color-card-bg);
-        padding: 20px 40px;
-        border-bottom: 1px solid var(--color-border);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      background-color: var(--color-card-bg);
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--color-border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .logo {
-        font-family: var(--font-heading);
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--color-primary-dark);
-        letter-spacing: 1px;
-        text-decoration: none;
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-primary-dark);
+      letter-spacing: 1px;
+      text-decoration: none;
     }
 
-    .logo span {
-        color: var(--color-primary-light);
-    }
+    .logo span { color: var(--color-primary-light); }
 
     .page-banner {
       text-align: center;
@@ -101,21 +83,15 @@
     }
 
     .intro-box {
-        max-width: 900px;
-        margin: 30px auto 0;
-        padding: 20px 30px;
-        background-color: var(--color-background-soft);
-        border-left: 5px solid var(--color-primary-light);
-        color: var(--color-text-muted);
-        font-style: italic;
-        font-size: 1.15rem;
-        line-height: 1.8;
-    }
-    .intro-box p strong {
-        color: var(--color-primary-dark);
-        font-style: normal;
-        font-weight: 600;
-        margin-right: 5px;
+      max-width: 900px;
+      margin: 30px auto 0;
+      padding: 20px 30px;
+      background-color: var(--color-background-soft);
+      border-left: 5px solid var(--color-primary-light);
+      color: var(--color-text-muted);
+      font-style: italic;
+      font-size: 1.15rem;
+      line-height: 1.8;
     }
 
     form {
@@ -145,16 +121,14 @@
       gap: 30px;
       margin-bottom: 20px;
     }
-    
-    .form-group > div:nth-child(7), 
-    .form-group > div:nth-child(8) { 
-        grid-column: 1 / -1;
-    }
 
-    .full-width {
+    .form-group > div:nth-child(7),
+    .form-group > div:nth-child(8) {
       grid-column: 1 / -1;
     }
-    
+
+    .full-width { grid-column: 1 / -1; }
+
     label {
       display: block;
       font-weight: 600;
@@ -183,13 +157,11 @@
     }
 
     input::placeholder, textarea::placeholder {
-        color: var(--color-text-muted);
-        opacity: 0.7;
+      color: var(--color-text-muted);
+      opacity: 0.7;
     }
 
-    input[type="file"] {
-      padding: 10px 18px;
-    }
+    input[type="file"] { padding: 10px 18px; }
 
     button {
       width: 100%;
@@ -202,17 +174,12 @@
       letter-spacing: 0.5px;
       border-radius: 4px;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.15s ease; 
+      transition: background-color 0.3s ease, transform 0.15s ease;
       margin-top: 30px;
     }
 
-    button:hover {
-      background-color: var(--color-primary-light);
-    }
-
-    button:active {
-      transform: scale(0.99);
-    }
+    button:hover { background-color: var(--color-primary-light); }
+    button:active { transform: scale(0.99); }
 
     footer {
       text-align: center;
@@ -224,33 +191,58 @@
       margin-top: auto;
     }
 
-    @media (max-width: 992px) {
-      .form-group {
-        grid-template-columns: 1fr 1fr;
-      }
+    /* voice-to-profile CSS (unchanged) */
+    .bio-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      grid-column: 1 / -1;
     }
 
+    .voice-icon {
+      position: absolute;
+      right: 10px;
+      top: 38px;
+      padding: 10px;
+      cursor: pointer;
+      color: var(--color-primary-dark);
+      font-size: 1.5rem;
+      line-height: 1;
+      transition: color 0.2s, transform 0.2s;
+      z-index: 10;
+      border-radius: 50%;
+    }
+
+    .voice-icon:hover { color: var(--color-primary-light); transform: scale(1.05); }
+    .voice-icon.recording { color: red; animation: pulse 1s infinite alternate; }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4); }
+      100% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+    }
+
+    @media (max-width: 992px) {
+      .form-group { grid-template-columns: 1fr 1fr; }
+    }
     @media (max-width: 600px) {
-      .form-group {
-        grid-template-columns: 1fr;
-      }
+      .form-group { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  
-<div class="site-header">
+
+  <div class="site-header">
     <a href="#" class="logo">Skill<span>Connect</span></a>
-    
-</div>
+  </div>
 
   <div class="container">
     <header class="page-banner">
       <h1>Worker Registration</h1>
       <div class="intro-box">
         <p>
-            <strong>Hello.</strong> We're seeking **Masterful Craftspeople** ready to showcase their expertise. If your skill is your signature and your reputation is your currency, you've found your home. Tell us about the work that sets you apart.
+          <strong>Hello.</strong> We're seeking <strong>Masterful Craftspeople</strong> ready to showcase their expertise...
         </p>
+        <p>🗣️ <strong>New Feature:</strong> Click the <strong>Microphone Icon</strong> and speak your profile details!</p>
       </div>
     </header>
 
@@ -258,57 +250,58 @@
       <h2>Create Your Profile</h2>
 
       <div class="form-group">
-          <div>
-              <label for="name">Full Name</label>
-              <input type="text" id="name" placeholder="Enter your full name" required>
-          </div>
+        <div>
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="Enter your full name" required>
+        </div>
 
-          <div>
-              <label for="email">Email Address</label>
-              <input type="email" id="email" placeholder="Your primary contact email" required>
-          </div>
+        <div>
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="Your primary contact email" required>
+        </div>
 
-          <div>
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" placeholder="Contact number for clients" required>
-          </div>
+        <div>
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="Contact number for clients" required>
+        </div>
 
-          <div>
-              <label for="city">City</label>
-              <input type="text" id="city" placeholder="e.g., Hyderabad" required>
-          </div>
+        <div>
+          <label for="city">City</label>
+          <input type="text" id="city" placeholder="e.g., Hyderabad" required>
+        </div>
 
-          <div>
-              <label for="area">Area / Locality</label>
-              <input type="text" id="area" placeholder="e.g., Chandanagar, Gachibowli" required>
-          </div>
+        <div>
+          <label for="area">Area / Locality</label>
+          <input type="text" id="area" placeholder="e.g., Chandanagar, Gachibowli" required>
+        </div>
 
-          <div>
-              <label for="category">Core Skill Category</label>
-              <select id="category" required>
-              <option value="">Select your specialisation...</option>
-              <option>Plumbing & HVAC</option>
-              <option>Electrical Services</option>
-              <option>Culinary Arts/Catering</option>
-              <option>Tutoring/Academic Coaching</option>
-              <option>Web & Software Development</option>
-              <option>Graphic & Product Design</option>
-              <option>Carpentry/Renovation</option>
-              <option>Other Niche Trade</option>
-              </select>
-          </div>
-          
-          <div> 
-              <label for="photo">Profile Photo URL (Google Drive, Imgur, etc.)</label>
-              <input type="text" id="photo" placeholder="Paste public image URL here" required>
-          </div>
+        <div>
+          <label for="category">Core Skill Category</label>
+          <select id="category" required>
+            <option value="">Select your specialisation...</option>
+            <option>Plumbing & HVAC</option>
+            <option>Electrical Services</option>
+            <option>Culinary Arts/Catering</option>
+            <option>Tutoring/Academic Coaching</option>
+            <option>Web & Software Development</option>
+            <option>Graphic & Product Design</option>
+            <option>Carpentry/Renovation</option>
+            <option>Other Niche Trade</option>
+          </select>
+        </div>
 
-          <div class="full-width">
-              <label for="bio">Worker Bio (Showcase your skills)</label>
-              <textarea id="bio" rows="4" placeholder="Highlight your experience, certifications, and what makes your work exceptional (Min. 50 words)"></textarea>
-          </div>
+        <div>
+          <label for="photo">Profile Photo URL (Google Drive, Imgur, etc.)</label>
+          <input type="text" id="photo" placeholder="Paste public image URL here" required>
+        </div>
+
+        <div class="bio-container">
+          <label for="bio">Worker Bio (Showcase your skills)</label>
+          <textarea id="bio" rows="4" placeholder="Highlight your experience, certifications, and what makes your work exceptional (Min. 50 words)"></textarea>
+          <span id="voice-to-profile-btn" class="voice-icon" title="Tap to Speak (e.g., 'I sew clothes and make saree blouses in Chandanagar, Hyderabad')">🎙️</span>
+        </div>
       </div>
-      
+
       <button type="submit" id="register-button">Sign Up and Launch Your Profile</button>
     </form>
   </div>
@@ -316,47 +309,183 @@
   <footer>
     &copy; 2025 SkillConnect. Connecting talent, creating opportunities.
   </footer>
-  
-  <script>
-    document.getElementById('worker-registration-form').addEventListener('submit', function(event) {
-      event.preventDefault(); 
 
-      // Check if Firebase is initialized before proceeding
-      if (typeof db === 'undefined') {
-          alert("Error: Firebase is not initialized. Please check your config details in the <head> section.");
-          return;
+  <script>
+    // --- FIREBASE INIT ---
+    // NOTE: Exposing client-side config is normal for Firebase web apps,
+    // but ensure you have correct Firestore security rules set on the console.
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6Kn44-ilM8DoCrzUFwoVYyd4GmuDcsFE",
+      authDomain: "skillconnect-f6632.firebaseapp.com",
+      projectId: "skillconnect-f6632",
+      storageBucket: "skillconnect-f6632.appspot.com", // recommended format
+      messagingSenderId: "462430536837",
+      appId: "1:462430536837:web:4e6a791ca9b462a29895ec",
+      measurementId: "G-VY0EH70WR9"
+    };
+
+    try {
+      const app = firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      // store db as global for other script parts
+      window._skillconnect_db = db;
+    } catch (e) {
+      console.error("Firebase init error:", e);
+    }
+
+    // --- VOICE-TO-PROFILE LOGIC ---
+    const startSpeechRecognition = () => {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Speech Recognition is not supported in this browser. Please use Chrome or Edge.");
+        return;
       }
-      
-      // Collect data from the form fields
-      const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        city: document.getElementById('city').value,
-        area: document.getElementById('area').value,
-        category: document.getElementById('category').value,
-        bio: document.getElementById('bio').value,
-        photo_url: document.getElementById('photo').value, 
-        registered_on: new Date()
+
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.lang = 'en-IN';
+      recognition.interimResults = false;
+
+      const voiceBtn = document.getElementById('voice-to-profile-btn');
+      const bioInput = document.getElementById('bio');
+
+      voiceBtn.classList.add('recording');
+      bioInput.placeholder = "Listening... Speak now!";
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript || "";
+        // Fill bio and attempt to extract fields
+        bioInput.value = transcript;
+        extractAndFillFields(transcript);
       };
 
-      // Basic validation
-      for (const key in formData) {
-          if (!formData[key] || (key === 'bio' && formData[key].length < 50)) {
-              alert(`Please fill out all required fields correctly. Bio requires a minimum of 50 characters.`);
-              return;
-          }
+      recognition.onend = () => {
+        voiceBtn.classList.remove('recording');
+        bioInput.placeholder = "Highlight your experience, certifications, and what makes your work exceptional (Min. 50 words)";
+      };
+
+      recognition.onerror = (event) => {
+        voiceBtn.classList.remove('recording');
+        bioInput.placeholder = "Error. Click to try again.";
+        console.error('Speech recognition error:', event.error);
+        alert(`Voice input failed: ${event.error}. Ensure microphone access is granted.`);
+      };
+
+      recognition.start();
+    };
+
+    document.getElementById('voice-to-profile-btn').addEventListener('click', startSpeechRecognition);
+
+    // --- ROBUST CATEGORY MAPPING (use array of [RegExp, result] pairs) ---
+    function extractAndFillFields(text) {
+      if (!text) return;
+      const normalizedText = text.toLowerCase();
+
+      // Use an array of [regex, categoryString] to avoid object-key-stringification issues
+      const categoryPairs = [
+        [/(sew|tailor|blouse|garment|cloth|stitch|stitching)/, 'Other Niche Trade'],
+        [/(plumb|pipe|ac|hvac|cooler|leak|motor)/, 'Plumbing & HVAC'],
+        [/(electric|wire|switch|fan|light|voltage|electrical)/, 'Electrical Services'],
+        [/(cook|chef|cater|food|biryani|kitchen)/, 'Culinary Arts/Catering'],
+        [/(web|software|app|code|developer|program|site)/, 'Web & Software Development'],
+        [/(design|logo|photoshop|illustrator|ux|ui)/, 'Graphic & Product Design'],
+        [/(carpenter|wood|furniture|renovate|repair|joiner)/, 'Carpentry/Renovation'],
+        [/(tutor|teach|teaching|coach|homework|tuition)/, 'Tutoring/Academic Coaching']
+      ];
+
+      let categoryFound = false;
+      for (const [regex, categoryName] of categoryPairs) {
+        if (regex.test(normalizedText)) {
+          const categoryEl = document.getElementById('category');
+          // only set if option exists (safer)
+          const foundOption = Array.from(categoryEl.options).find(o => o.text === categoryName);
+          if (foundOption) categoryEl.value = foundOption.text;
+          else categoryEl.value = categoryName;
+          categoryFound = true;
+          break;
+        }
       }
 
-      // Add the data to the 'workers' collection in Cloud Firestore
+      // City extraction - improved: try a small list and also try "in <city>" pattern
+      const cityList = ['hyderabad','chennai','mumbai','delhi','bangalore','pune','kolkata','ahmedabad','lucknow','varanasi'];
+      for (const c of cityList) {
+        if (normalizedText.includes(` in ${c}`) || normalizedText.includes(` near ${c}`) || normalizedText.includes(` from ${c}`) || normalizedText.includes(`${c} `) ) {
+          const city = c.charAt(0).toUpperCase() + c.slice(1);
+          document.getElementById('city').value = city;
+          break;
+        }
+      }
+
+      // Area/locality: try to extract patterns like "in <area>" or "at <area>"
+      const areaRegex = /(?:in|at|near|from)\s+([a-z0-9\s\-]{3,40})/i;
+      const areaMatch = normalizedText.match(areaRegex);
+      if (areaMatch && areaMatch[1]) {
+        // Trim trailing words that are cities or general words (very basic)
+        const rawArea = areaMatch[1].trim();
+        // Capitalize each word
+        const niceArea = rawArea.replace(/\b\w/g, l => l.toUpperCase());
+        document.getElementById('area').value = niceArea;
+      }
+
+      // Inform user to verify filled fields
+      // Use a non-blocking notice rather than multiple alerts
+      const msg = "Auto-fill attempted. Please review 'City', 'Area', and 'Category' fields before submitting.";
+      console.info(msg);
+      // show a brief UI-friendly prompt
+      if (window.Toastify) {
+        // if you have any toast lib you could call it here
+      } else {
+        // fallback subtle confirm
+        // don't block user too much; use confirm for visible notice
+        if (!categoryFound) {
+          // let user know category wasn't detected
+          setTimeout(() => alert(msg + "\n\n(Category not auto-detected.)"), 200);
+        } else {
+          setTimeout(() => alert(msg), 200);
+        }
+      }
+    }
+
+    // --- FORM SUBMISSION & FIRESTORE SAVE ---
+    document.getElementById('worker-registration-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const db = window._skillconnect_db;
+      if (typeof db === 'undefined') {
+        alert("Error: Firebase is not initialized. Please check your config details and internet connection.");
+        return;
+      }
+
+      const formData = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        city: document.getElementById('city').value.trim(),
+        area: document.getElementById('area').value.trim(),
+        category: document.getElementById('category').value,
+        bio: document.getElementById('bio').value.trim(),
+        photo_url: document.getElementById('photo').value.trim(),
+        registered_on: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      // Validate required fields and bio length
+      if (!formData.name || !formData.email || !formData.phone || !formData.city || !formData.area || !formData.category || !formData.photo_url) {
+        alert("Please fill out all required fields.");
+        return;
+      }
+      if (!formData.bio || formData.bio.length < 50) {
+        alert("Bio requires a minimum of 50 characters. Please expand your bio a bit.");
+        return;
+      }
+
       db.collection("workers").add(formData)
         .then((docRef) => {
-          alert("Registration successful! Your data is stored in Firebase. Document ID: " + docRef.id);
+          alert("Registration successful! Document ID: " + docRef.id);
           document.getElementById('worker-registration-form').reset();
         })
         .catch((error) => {
           console.error("Error adding document: ", error);
-          alert("Registration failed! Check the browser console (F12) for detailed errors. This is often due to strict Firestore Security Rules or a connection issue.");
+          alert("Registration failed! Check console for errors. Possible causes: Firestore security rules or network issues.");
         });
     });
   </script>
