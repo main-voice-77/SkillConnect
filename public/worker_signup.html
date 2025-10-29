@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SkillConnect | Worker Registration</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Karla:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+<style>
+/* (your CSS unchanged) */
+:root {
+--color-primary-dark: #8b7454;
+--color-primary-light: #cfa874;
+--color-background-soft: #fbfbf7;
+--color-card-bg: #ffffff;
+--color-text-dark: #3a332d;
+--color-text-muted: #70685e;
+--color-border: #e0d9cf;
+--font-heading: 'Playfair Display', serif;
+--font-body: 'Karla', sans-serif;
+}
+
+body {
+margin: 0;
+font-family: var(--font-body);
+background-color: var(--color-background-soft);
+color: var(--color-text-dark);
+line-height: 1.6;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="%23e0d9cf" fill-opacity="0.2"><path d="M0 40L40 0H20L0 20V40ZM40 40V20L20 40H40Z"/></g></svg>');
+background-size: 40px 40px;
+}
+
+.container {
+width: 100%;
+max-width: 1400px;
+margin: 0 auto;
+padding: 0 40px;
+flex-grow: 1;
+}
+
+.site-header {
+background-color: var(--color-card-bg);
+padding: 20px 40px;
+border-bottom: 1px solid var(--color-border);
+box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.logo {
+font-family: var(--font-heading);
+font-size: 2rem;
+font-weight: 700;
+color: var(--color-primary-dark);
+letter-spacing: 1px;
+text-decoration: none;
+}
+
+.logo span { color: var(--color-primary-light); }
+
+/* 💡 CUTE NEW STYLE: Language Toggle Button Style */
+#language-toggle {
+    background-color: var(--color-primary-light);
+    color: var(--color-card-bg);
+    border: none;
+    padding: 5px 8px; /* Very small padding */
+    font-size: 0.7rem; /* Tiny font size */
+    font-weight: 600;
+    border-radius: 20px; /* Rounded pill shape (CUTE!) */
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    white-space: nowrap; 
+}
+#language-toggle:hover {
+    background-color: #d4b486; 
+    transform: scale(1.02);
+}
+
+.page-banner {
+text-align: center;
+padding: 80px 40px 60px;
+background-color: var(--color-card-bg);
+border-bottom: 1px solid var(--color-border);
+margin-bottom: 40px;
+}
+
+.page-banner h1 {
+font-family: var(--font-heading);
+font-size: 3.5rem;
+color: var(--color-primary-dark);
+margin-bottom: 10px;
+letter-spacing: 2px;
+}
+
+.intro-box {
+max-width: 900px;
+margin: 30px auto 0;
+padding: 20px 30px;
+background-color: var(--color-background-soft);
+border-left: 5px solid var(--color-primary-light);
+color: var(--color-text-muted);
+font-style: italic;
+font-size: 1.15rem;
+line-height: 1.8;
+}
+
+/* 💡 FIX: Reduced Max-Width for a tighter form layout */
+form {
+max-width: 650px; /* Reduced from 950px */
+margin: 0 auto 80px;
+padding: 60px;
+background-color: var(--color-card-bg);
+border-radius: 12px;
+box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.05);
+border: 1px solid var(--color-border);
+}
+
+form h2 {
+text-align: center;
+font-family: var(--font-heading);
+color: var(--color-primary-dark);
+margin-bottom: 40px;
+font-weight: 700;
+font-size: 2rem;
+padding-bottom: 10px;
+border-bottom: 2px dashed var(--color-border);
+}
+
+.form-group {
+/* Changed from 3 columns to 2 columns to fit better in the narrower form */
+display: grid;
+grid-template-columns: 1fr 1fr; 
+gap: 30px;
+margin-bottom: 20px;
+}
+
+/* These rules are now unnecessary because the grid handles it, but kept .bio-container full-width */
+.form-group > div:nth-child(7) { grid-column: 1 / -1; }
+.form-group > div:nth-child(8) { grid-column: 1 / -1; }
+
+.full-width { grid-column: 1 / -1; }
+
+label {
+display: block;
+font-weight: 600;
+margin-bottom: 8px;
+color: var(--color-text-dark);
+font-size: 1rem;
+}
+
+input, select, textarea {
+width: 100%;
+padding: 12px 18px;
+border: 1px solid var(--color-border);
+border-radius: 4px;
+font-size: 1rem;
+background-color: var(--color-background-soft);
+outline: none;
+transition: all 0.3s ease;
+box-sizing: border-box;
+color: var(--color-text-dark);
+}
+
+input:focus, select:focus, textarea:focus {
+border-color: var(--color-primary-light);
+box-shadow: 0 0 0 2px rgba(207, 168, 116, 0.5);
+background-color: var(--color-card-bg);
+}
+
+input::placeholder, textarea::placeholder {
+color: var(--color-text-muted);
+opacity: 0.7;
+}
+
+input[type="file"] { padding: 10px 18px; }
+
+button {
+width: 100%;
+padding: 15px;
+background-color: var(--color-primary-dark);
+border: none;
+color: var(--color-card-bg);
+font-size: 1.15rem;
+font-weight: 700;
+letter-spacing: 0.5px;
+border-radius: 4px;
+transition: background-color 0.3s ease, transform 0.15s ease;
+margin-top: 30px;
+}
+
+button:hover { background-color: var(--color-primary-light); }
+button:active { transform: scale(0.99); }
+
+footer {
+text-align: center;
+padding: 30px;
+background-color: var(--color-card-bg);
+border-top: 1px solid var(--color-border);
+color: var(--color-text-muted);
+font-size: 0.9rem;
+margin-top: auto;
+}
+
+/* 🎤 CSS for VOICE FEATURE */
+.bio-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / -1;
+}
+
+.voice-icon {
+  position: absolute;
+  right: 10px;
+  top: 38px;
+  padding: 10px;
+  cursor: pointer;
+  color: var(--color-primary-dark);
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: color 0.2s, transform 0.2s;
+  z-index: 10;
+  border-radius: 50%;
+}
+
+.voice-icon:hover { color: var(--color-primary-light); transform: scale(1.05); }
+.voice-icon.recording { color: red; animation: pulse 1s infinite alternate; }
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4); }
+  100% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+}
+
+/* Adjusted Responsive Breakpoint to 1 column for smaller devices */
+@media (max-width: 768px) { .form-group { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .form-group { grid-template-columns: 1fr; } }
+
+</style>
+</head>
+<body>
+
+<div class="site-header">
+<a href="#" class="logo">Skill<span>Connect</span></a>
+<button id="language-toggle" style="width: 10%;" data-lang="en">Switch to Hindi</button></div>
+
+<div class="container">
+<header class="page-banner">
+<h1 data-key="heading">Worker Registration</h1>
+<div class="intro-box">
+<p data-key="intro_main">
+<strong>Hello.</strong> We're seeking **Masterful Craftspeople** ready to showcase their expertise...
+</p>
+<p data-key="intro_voice">🗣️ **New Feature:** Click the **Microphone Icon** and speak your profile details!</p>
+</div>
+</header>
+
+<form id="worker-registration-form">
+<h2 data-key="form_title">Create Your Profile</h2>
+
+<div class="form-group">
+<div>
+<label for="name" data-key="name_label">Full Name</label>
+<input type="text" id="name" placeholder="Enter your full name" required>
+</div>
+
+<div>
+<label for="email" data-key="email_label">Email Address</label>
+<input type="email" id="email" placeholder="Your primary contact email" required>
+</div>
+
+<div>
+<label for="password" data-key="password_label">Account Password</label>
+<input type="password" id="password" placeholder="Create a strong password" required minlength="6">
+</div>
+
+<div>
+<label for="phone" data-key="phone_label">Phone Number</label>
+<input type="tel" id="phone" placeholder="Contact number for clients" required>
+</div>
+
+<div>
+<label for="city" data-key="city_label">City</label>
+<input type="text" id="city" placeholder="e.g., Hyderabad" required>
+</div>
+
+<div>
+<label for="area" data-key="area_label">Area / Locality</label>
+<input type="text" id="area" placeholder="e.g., Chandanagar, Gachibowli" required>
+</div>
+
+
+<div class="full-width">
+<label for="category" data-key="category_label">Core Skill Category</label>
+<select id="category" required>
+<option value="">Select your specialisation...</option>
+<option>Plumbing & HVAC</option>
+<option>Electrical Services</option>
+<option>Culinary Arts/Catering</option>
+<option>Tutoring/Academic Coaching</option>
+<option>Web & Software Development</option>
+<option>Graphic & Product Design</option>
+<option>Carpentry/Renovation</option>
+<option>Other Niche Trade</option>
+</select>
+</div>
+
+<div class="full-width">
+<label for="photo" data-key="photo_label">Profile Photo URL (Google Drive, Imgur, etc.)</label>
+<input type="text" id="photo" placeholder="Paste public image URL here" required>
+</div>
+
+<div class="bio-container full-width">
+<label for="bio" data-key="bio_label">Worker Bio (Showcase your skills)</label>
+<textarea id="bio" rows="4" placeholder="Highlight your experience, certifications, and what makes your work exceptional (Min. 50 words)"></textarea>
+<span id="voice-to-profile-btn" class="voice-icon" title="Tap to Speak">🎙️</span>
+</div>
+</div>
+
+<button type="submit" id="register-button" data-key="submit_button">Sign Up and Launch Your Profile</button>
+</form>
+</div>
+
+<footer>
+<div data-key="footer_text">&copy; 2025 SkillConnect. Connecting talent, creating opportunities.</div>
+</footer>
+
+<script>
+// --- FIREBASE INIT ---
+const firebaseConfig = {
+  apiKey: "AIzaSyD6Kn44-ilM8DoCrzUFwoVYyd4GmuDcsFE",
+  authDomain: "skillconnect-f6632.firebaseapp.com",
+  projectId: "skillconnect-f6632",
+  storageBucket: "skillconnect-f6632.appspot.com", 
+  messagingSenderId: "462430536837",
+  appId: "1:462430536837:web:4e6a791ca9b462a29895ec",
+  measurementId: "G-VY0EH70WR9"
+};
+
+// Initialize DB globally
+let db;
+try {
+  const app = firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+} catch (e) {
+  console.error("Firebase init error:", e);
+}
+
+
+// --- LANGUAGE TOGGLE LOGIC ---
+const translations = {
+    en: {
+        toggle_button: 'Switch to Hindi',
+        heading: 'Worker Registration',
+        form_title: 'Create Your Profile',
+        intro_main: '<strong>Hello.</strong> We\'re seeking **Masterful Craftspeople** ready to showcase their expertise...',
+        intro_voice: '🗣️ **New Feature:** Click the **Microphone Icon** and speak your profile details!',
+        name_label: 'Full Name',
+        email_label: 'Email Address',
+        password_label: 'Account Password',
+        phone_label: 'Phone Number',
+        city_label: 'City',
+        area_label: 'Area / Locality',
+        category_label: 'Core Skill Category',
+        photo_label: 'Profile Photo URL (Google Drive, Imgur, etc.)',
+        bio_label: 'Worker Bio (Showcase your skills)',
+        submit_button: 'Sign Up and Launch Your Profile',
+        footer_text: '© 2025 SkillConnect. Connecting talent, creating opportunities.',
+        bio_placeholder: 'Highlight your experience, certifications, and what makes your work exceptional (Min. 50 words)',
+        speak_prompt: 'Tap to Speak',
+    },
+    hi: {
+        toggle_button: 'अंग्रेजी में बदलें',
+        heading: 'श्रमिक पंजीकरण',
+        form_title: 'अपनी प्रोफ़ाइल बनाएं',
+        intro_main: '<strong>नमस्ते।</strong> हम **कुशल कारीगरों** की तलाश कर रहे हैं जो अपनी विशेषज्ञता दिखाना चाहते हैं...',
+        intro_voice: '🗣️ **नई सुविधा:** माइक्रोफ़ोन आइकन पर क्लिक करें और अपनी प्रोफ़ाइल विवरण बोलें!',
+        name_label: 'पूरा नाम',
+        email_label: 'ईमेल एड्रेस',
+        password_label: 'खाता पासवर्ड',
+        phone_label: 'फ़ोन नंबर',
+        city_label: 'शहर',
+        area_label: 'क्षेत्र / इलाका',
+        category_label: 'मुख्य कौशल श्रेणी',
+        photo_label: 'प्रोफ़ाइल फोटो यूआरएल (Google Drive, Imgur, आदि)',
+        bio_label: 'श्रमिक बायो (अपने कौशल का प्रदर्शन करें)',
+        submit_button: 'साइन अप करें और प्रोफ़ाइल लॉन्च करें',
+        footer_text: '© 2025 स्किलकनेक्ट। प्रतिभाओं को जोड़ना, अवसर पैदा करना।',
+        bio_placeholder: 'अपने अनुभव, प्रमाणपत्रों और अपने असाधारण काम को उजागर करें (न्यूनतम 50 शब्द)',
+        speak_prompt: 'बोलने के लिए टैप करें',
+    }
+};
+
+const updateText = (lang) => {
+    document.getElementById('language-toggle').textContent = translations[lang].toggle_button;
+    document.getElementById('language-toggle').setAttribute('data-lang', lang);
+    document.getElementById('voice-to-profile-btn').title = translations[lang].speak_prompt;
+
+    // Update all elements with data-key attributes
+    for (const key in translations[lang]) {
+        const elements = document.querySelectorAll(`[data-key="${key}"]`);
+        elements.forEach(el => {
+            if (el) {
+                el.innerHTML = translations[lang][key];
+            }
+        });
+    }
+
+    // Update specific attributes (like placeholder)
+    const bioElement = document.getElementById('bio');
+    if (bioElement) {
+        bioElement.placeholder = translations[lang].bio_placeholder;
+    }
+};
+
+const toggleLanguage = () => {
+    const currentLang = document.getElementById('language-toggle').getAttribute('data-lang');
+    const newLang = currentLang === 'en' ? 'hi' : 'en';
+    updateText(newLang);
+};
+
+document.getElementById('language-toggle').addEventListener('click', toggleLanguage);
+// Initialize the page text on load to ensure all data-keys are populated
+document.addEventListener('DOMContentLoaded', () => updateText('en'));
+
+
+// --- VOICE-TO-PROFILE LOGIC (STT) ---
+
+const startSpeechRecognition = () => {
+    // Check for browser compatibility
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Speech Recognition is not supported in this browser. Please use Chrome or Edge.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    // Set language based on the current UI language for better local recognition
+    recognition.lang = document.getElementById('language-toggle').getAttribute('data-lang') === 'hi' ? 'hi-IN' : 'en-IN'; 
+    recognition.interimResults = false;
+
+    const voiceBtn = document.getElementById('voice-to-profile-btn');
+    const bioInput = document.getElementById('bio');
+
+    voiceBtn.classList.add('recording');
+    bioInput.placeholder = "Listening... Speak now!";
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript || "";
+      bioInput.value = transcript;
+      extractAndFillFields(transcript);
+    };
+
+    recognition.onend = () => {
+      const currentLang = document.getElementById('language-toggle').getAttribute('data-lang');
+      voiceBtn.classList.remove('recording');
+      bioInput.placeholder = translations[currentLang].bio_placeholder;
+    };
+
+    recognition.onerror = (event) => {
+      voiceBtn.classList.remove('recording');
+      bioInput.placeholder = "Error. Click to try again.";
+      console.error('Speech recognition error:', event.error);
+      alert(`Voice input failed: ${event.error}. Ensure microphone access is granted.`);
+    };
+
+    recognition.start();
+};
+
+document.getElementById('voice-to-profile-btn').addEventListener('click', startSpeechRecognition);
+
+
+// --- ROBUST CATEGORY MAPPING & FIELD FILLING ---
+function extractAndFillFields(text) {
+    if (!text) return;
+    const normalizedText = text.toLowerCase();
+
+    // 1. Category Extraction
+    const categoryPairs = [
+      [/(sew|tailor|blouse|garment|cloth|stitch|stitching)/, 'Other Niche Trade'],
+      [/(plumb|pipe|ac|hvac|cooler|leak|motor)/, 'Plumbing & HVAC'],
+      [/(electric|wire|switch|fan|light|voltage|electrical)/, 'Electrical Services'],
+      [/(cook|chef|cater|food|biryani|kitchen)/, 'Culinary Arts/Catering'],
+      [/(web|software|app|code|developer|program|site)/, 'Web & Software Development'],
+      [/(design|logo|photoshop|illustrator|ux|ui)/, 'Graphic & Product Design'],
+      [/(carpenter|wood|furniture|renovate|repair|joiner)/, 'Carpentry/Renovation'],
+      [/(tutor|teach|teaching|coach|homework|tuition)/, 'Tutoring/Academic Coaching']
+    ];
+
+    let categoryFound = false;
+    const categoryEl = document.getElementById('category');
+
+    for (const [regex, categoryName] of categoryPairs) {
+      if (regex.test(normalizedText)) {
+        // Find the corresponding <option> and set the value
+        const foundOption = Array.from(categoryEl.options).find(o => o.text === categoryName);
+        if (foundOption) categoryEl.value = foundOption.value;
+        categoryFound = true;
+        break;
+      }
+    }
+
+    // 2. City Extraction
+    const cityList = ['hyderabad','chennai','mumbai','delhi','bangalore','pune','kolkata','ahmedabad'];
+    for (const c of cityList) {
+      if (normalizedText.includes(c) || normalizedText.includes(` in ${c}`) || normalizedText.includes(` near ${c}`)) {
+        const city = c.charAt(0).toUpperCase() + c.slice(1);
+        document.getElementById('city').value = city;
+        break;
+      }
+    }
+
+    // 3. Area/Locality Extraction
+    const areaRegex = /(?:in|at|near|from)\s+([a-z0-9\s\-]{3,40})/i;
+    const areaMatch = normalizedText.match(areaRegex);
+    if (areaMatch && areaMatch[1]) {
+      const rawArea = areaMatch[1].trim();
+      const niceArea = rawArea.replace(/\b\w/g, l => l.toUpperCase());
+      document.getElementById('area').value = niceArea;
+    }
+    
+    // 4. Inform User
+    const currentLang = document.getElementById('language-toggle').getAttribute('data-lang');
+    
+    const msg = currentLang === 'hi'
+        ? "ऑटो-फिल का प्रयास किया गया। कृपया सबमिट करने से पहले 'शहर', 'क्षेत्र', और 'श्रेणी' की जाँच करें।" + (categoryFound ? "" : "\n\n(श्रेणी का पता नहीं चला।)")
+        : "Auto-fill attempted. Please review 'City', 'Area', and 'Category' fields before submitting." + (categoryFound ? "" : "\n\n(Category not auto-detected.)");
+
+    setTimeout(() => alert(msg), 200);
+}
+
+
+// --- FORM SUBMISSION & FIRESTORE SAVE ---
+document.getElementById('worker-registration-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    if (typeof db === 'undefined') {
+      alert("Error: Firebase is not initialized. Please check your config details and internet connection.");
+      return;
+    }
+
+    const formData = {
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      password: document.getElementById('password').value.trim(), 
+      phone: document.getElementById('phone').value.trim(),
+      city: document.getElementById('city').value.trim(),
+      area: document.getElementById('area').value.trim(),
+      category: document.getElementById('category').value,
+      bio: document.getElementById('bio').value.trim(),
+      photo_url: document.getElementById('photo').value.trim(),
+      registered_on: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    // Validate required fields and bio length
+    if (!formData.name || !formData.email || !formData.password || !formData.phone || !formData.city || !formData.area || !formData.category || !formData.photo_url) {
+      alert("Please fill out all required fields, including Password and Photo URL.");
+      return;
+    }
+    if (formData.password.length < 6) {
+      alert("Password must be at least 6 characters.");
+      return;
+    }
+    if (!formData.bio || formData.bio.length < 50) {
+      alert("Bio requires a minimum of 50 characters. Please expand your bio a bit.");
+      return;
+    }
+
+    db.collection("workers").add(formData)
+      .then((docRef) => {
+        alert("Registration successful! Document ID: " + docRef.id);
+        // 💡 REDIRECT AFTER SUCCESSFUL REGISTRATION
+        window.location.href = 'worker_dashboard.html';
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+        alert("Registration failed! Check console for errors. Possible causes: Firestore security rules or network issues.");
+      });
+});
+</script>
+</body>
+</html>

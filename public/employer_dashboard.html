@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillConnect | Employer Job Post</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Karla:wght@400;600&display=swap" rel="stylesheet">
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+apiKey: "AIzaSyD6Kn44-ilM8DoCrzUFwoVYyd4GmuDcsFE",
+authDomain: "skillconnect-f6632.firebaseapp.com",
+projectId: "skillconnect-f6632",
+storageBucket: "skillconnect-f6632.firebasestorage.app",
+messagingSenderId: "462430536837",
+appId: "1:462430536837:web:4e6a791ca9b462a29895ec",
+measurementId: "G-VY0EH70WR9"
+};
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+</script>
+
+<style>
+:root {
+--color-primary-dark: #8b7454;
+--color-primary-light: #cfa874;
+--color-background-soft: #fbfbf7;
+--color-card-bg: #ffffff;
+--color-text-dark: #3a332d;
+--color-text-muted: #70685e;
+--color-border: #e0d9cf;
+--font-heading: 'Playfair Display', serif;
+--font-body: 'Karla', sans-serif;
+}
+body {
+margin: 0;
+font-family: var(--font-body);
+background-color: var(--color-background-soft);
+color: var(--color-text-dark);
+line-height: 1.6;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="%23e0d9cf" fill-opacity="0.2"><path d="M0 40L40 0H20L0 20V40ZM40 40V20L20 40H40Z"/></g></svg>');
+background-size: 40px 40px;
+}
+.container {
+width: 100%;
+max-width: 1400px;
+margin: 0 auto;
+padding: 0 40px;
+flex-grow: 1;
+}
+.site-header {
+background-color: var(--color-card-bg);
+padding: 20px 40px;
+border-bottom: 1px solid var(--color-border);
+box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.logo {
+font-family: var(--font-heading);
+font-size: 2rem;
+font-weight: 700;
+color: var(--color-primary-dark);
+letter-spacing: 1px;
+text-decoration: none;
+}
+.logo span {
+color: var(--color-primary-light);
+}
+.page-banner {
+text-align: center;
+padding: 80px 40px 60px;
+background-color: var(--color-card-bg);
+border-bottom: 1px solid var(--color-border);
+margin-bottom: 40px;
+}
+.page-banner h1 {
+font-family: var(--font-heading);
+font-size: 3.5rem;
+color: var(--color-primary-dark);
+margin-bottom: 10px;
+letter-spacing: 2px;
+}
+.intro-box {
+max-width: 900px;
+margin: 30px auto 0;
+padding: 20px 30px;
+background-color: var(--color-background-soft);
+border-left: 5px solid var(--color-primary-light);
+color: var(--color-text-muted);
+font-style: italic;
+font-size: 1.15rem;
+line-height: 1.8;
+}
+form {
+max-width: 950px;
+margin: 0 auto 80px;
+padding: 60px;
+background-color: var(--color-card-bg);
+border-radius: 12px;
+box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.05);
+border: 1px solid var(--color-border);
+}
+form h2 {
+text-align: center;
+font-family: var(--font-heading);
+color: var(--color-primary-dark);
+margin-bottom: 40px;
+font-weight: 700;
+font-size: 2rem;
+padding-bottom: 10px;
+border-bottom: 2px dashed var(--color-border);
+}
+.form-group {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 30px;
+margin-bottom: 20px;
+}
+.full-width {
+grid-column: 1 / -1;
+}
+label {
+display: block;
+font-weight: 600;
+margin-bottom: 8px;
+color: var(--color-text-dark);
+font-size: 1rem;
+}
+input, select, textarea {
+width: 100%;
+padding: 12px 18px;
+border: 1px solid var(--color-border);
+border-radius: 4px;
+font-size: 1rem;
+background-color: var(--color-background-soft);
+outline: none;
+transition: all 0.3s ease;
+box-sizing: border-box;
+color: var(--color-text-dark);
+}
+input:focus, select:focus, textarea:focus {
+border-color: var(--color-primary-light);
+box-shadow: 0 0 0 2px rgba(207,168,116,0.5);
+background-color: var(--color-card-bg);
+}
+button {
+width: 100%;
+padding: 15px;
+background-color: var(--color-primary-dark);
+border: none;
+color: var(--color-card-bg);
+font-size: 1.15rem;
+font-weight: 700;
+letter-spacing: 0.5px;
+border-radius: 4px;
+cursor: pointer;
+transition: background-color 0.3s ease, transform 0.15s ease;
+margin-top: 30px;
+}
+button:hover {background-color: var(--color-primary-light);}
+footer {
+text-align: center;
+padding: 30px;
+background-color: var(--color-card-bg);
+border-top: 1px solid var(--color-border);
+color: var(--color-text-muted);
+font-size: 0.9rem;
+margin-top: auto;
+}
+@media (max-width: 992px) {
+.form-group {grid-template-columns: 1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="site-header">
+    
+<a href="#" class="logo">Skill<span>Connect</span>
+</a>
+<button onclick="window.location.href='job_apply.html';" style="background-color: #8b7454; color: white; border: none; width: 10%; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">My Jobs</button>
+<button onclick="window.location.href='homepage.html';" style="background-color: #8b7454; color: white; border: none; width: 10%; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">Logout</button>
+
+</div>
+<div class="container">
+<header class="page-banner">
+<h1>Employer Dashboard</h1>
+<div class="intro-box">
+<p><strong>Post a Job.</strong> Find the perfect talent for your needs! Clearly define your requirement, the skill level needed, and the duration of the work to attract the best matches.</p>
+</div>
+</header>
+
+<form id="job-post-form">
+<h2>Create New Job Post</h2>
+<div class="form-group">
+<div>
+<label for="employer_name">Your Name / Organization</label>
+<input type="text" id="employer_name" required>
+</div>
+<div>
+<label for="contact_email">Contact Email</label>
+<input type="email" id="contact_email" required>
+</div>
+<div>
+<label for="job_type">Job Type</label>
+<select id="job_type" required>
+<option value="">Select...</option>
+<option value="Cook">Cook</option>
+<option value="Cleaning">Cleaning</option>
+<option value="Tailoring">Tailoring</option>
+<option value="Delivery">Delivery</option>
+<option value="PetCare">Pet Care</option>
+</select>
+</div>
+<div>
+<label for="worker_level">Worker Level</label>
+<select id="worker_level" required>
+<option value="1">Beginner (1)</option>
+<option value="2">Intermediate (2)</option>
+<option value="3">Advanced (3)</option>
+</select>
+</div>
+<div>
+<label for="duration_hrs">Duration (Hours)</label>
+<input type="number" id="duration_hrs" min="1" step="0.5" required>
+</div>
+<div>
+<label for="job_location">Location</label>
+<input type="text" id="job_location" required>
+</div>
+<div class="full-width">
+<label for="job_statement">Job Description</label>
+<textarea id="job_statement" rows="4" required></textarea>
+</div>
+</div>
+<button type="submit">Post Job</button>
+</form>
+</div>
+<footer>&copy; 2025 SkillConnect. Connecting talent, creating opportunities.</footer>
+
+<script>
+function calculateWage(jobType, workerLevel, duration) {
+let baseRate = 0;
+switch(jobType) {
+case 'Cook': baseRate = 180; break;
+case 'Cleaning': baseRate = 150; break;
+case 'Tailoring': baseRate = 200; break;
+case 'Delivery': baseRate = 170; break;
+case 'PetCare': baseRate = 160; break;
+default: baseRate = 150;
+}
+const levelMultiplier = 0.8 + (0.3 * workerLevel); // 1=0.8x,2=1.1x,3=1.4x
+const total = baseRate * levelMultiplier * duration;
+return Math.round(total);
+}
+
+const jobPostForm = document.getElementById('job-post-form');
+jobPostForm.addEventListener('submit', async (e) => {
+e.preventDefault();
+const name = document.getElementById('employer_name').value;
+const email = document.getElementById('contact_email').value;
+const jobType = document.getElementById('job_type').value;
+const level = parseInt(document.getElementById('worker_level').value);
+const duration = parseFloat(document.getElementById('duration_hrs').value);
+const location = document.getElementById('job_location').value;
+const desc = document.getElementById('job_statement').value;
+if (!jobType || !level || !duration) {
+alert("Please fill all required fields.");
+return;
+}
+const wage = calculateWage(jobType, level, duration);
+const jobData = {
+employer_name: name,
+contact_email: email,
+job_type: jobType,
+worker_level: level,
+duration_hrs: duration,
+job_location: location,
+job_statement: desc,
+calculated_wage: wage,
+posted_on: new Date().toISOString()
+};
+try {
+await db.collection("jobs").add(jobData);
+alert(`Job posted successfully! Calculated total wage: ₹${wage}`);
+jobPostForm.reset();
+} catch (err) {
+console.error(err);
+alert("Error posting job.");
+}
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillConnect | Employer Sign Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Karla:wght@400;600&display=swap" rel="stylesheet">
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<script>
+// ⚠️ USE YOUR LIVE FIREBASE PROJECT CONFIG DETAILS HERE ⚠️
+const firebaseConfig = {
+apiKey: "AIzaSyD6Kn44-ilM8DoCrzUFwoVYyd4GmuDcsFE",
+authDomain: "skillconnect-f6632.firebaseapp.com",
+projectId: "skillconnect-f6632",
+storageBucket: "skillconnect-f6632.firebasestorage.app",
+messagingSenderId: "462430536837",
+appId: "1:462430536837:web:4e6a791ca9b462a29895ec"
+};
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+</script>
+
+<style>
+/* 🎨 Aesthetic Styles (Use the same CSS as worker_registration page) */
+:root {
+--color-primary-dark: #8b7454;
+--color-primary-light: #cfa874;
+--color-background-soft: #fbfbf7;
+--color-card-bg: #ffffff;
+--color-text-dark: #3a332d;
+--color-text-muted: #70685e;
+--color-border: #e0d9cf;
+--font-heading: 'Playfair Display', serif;
+--font-body: 'Karla', sans-serif;
+}
+
+body {
+margin: 0;
+font-family: var(--font-body);
+background-color: var(--color-background-soft);
+color: var(--color-text-dark);
+line-height: 1.6;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="%23e0d9cf" fill-opacity="0.2"><path d="M0 40L40 0H20L0 20V40ZM40 40V20L20 40H40Z"/></g></svg>');
+background-size: 40px 40px;
+}
+
+.container {
+width: 100%;
+max-width: 1400px;
+margin: 0 auto;
+padding: 0 40px;
+flex-grow: 1;
+}
+
+.site-header {
+background-color: var(--color-card-bg);
+padding: 20px 40px;
+border-bottom: 1px solid var(--color-border);
+box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.logo {
+font-family: var(--font-heading);
+font-size: 2rem;
+font-weight: 700;
+color: var(--color-primary-dark);
+letter-spacing: 1px;
+text-decoration: none;
+}
+
+.logo span {
+color: var(--color-primary-light);
+}
+
+.page-banner {
+text-align: center;
+padding: 80px 40px 60px;
+background-color: var(--color-card-bg);
+border-bottom: 1px solid var(--color-border);
+margin-bottom: 40px;
+}
+
+.page-banner h1 {
+font-family: var(--font-heading);
+font-size: 3.5rem;
+color: var(--color-primary-dark);
+margin-bottom: 10px;
+letter-spacing: 2px;
+}
+
+.intro-box {
+max-width: 900px;
+margin: 30px auto 0;
+padding: 20px 30px;
+background-color: var(--color-background-soft);
+border-left: 5px solid var(--color-primary-light);
+color: var(--color-text-muted);
+font-style: italic;
+font-size: 1.15rem;
+line-height: 1.8;
+}
+.intro-box p strong {
+color: var(--color-primary-dark);
+font-style: normal;
+font-weight: 600;
+margin-right: 5px;
+}
+
+form {
+max-width: 700px; /* Reduced width for simpler form */
+margin: 0 auto 80px;
+padding: 60px;
+background-color: var(--color-card-bg);
+border-radius: 12px;
+box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.05);
+border: 1px solid var(--color-border);
+}
+
+form h2 {
+text-align: center;
+font-family: var(--font-heading);
+color: var(--color-primary-dark);
+margin-bottom: 40px;
+font-weight: 700;
+font-size: 2rem;
+padding-bottom: 10px;
+border-bottom: 2px dashed var(--color-border);
+}
+
+.form-group {
+display: grid;
+grid-template-columns: 1fr 1fr; /* Two-column layout */
+gap: 30px;
+margin-bottom: 20px;
+}
+
+.full-width {
+grid-column: 1 / -1;
+}
+
+label {
+display: block;
+font-weight: 600;
+margin-bottom: 8px;
+color: var(--color-text-dark);
+font-size: 1rem;
+}
+
+input, select, textarea {
+width: 100%;
+padding: 12px 18px;
+border: 1px solid var(--color-border);
+border-radius: 4px;
+font-size: 1rem;
+background-color: var(--color-background-soft);
+outline: none;
+transition: all 0.3s ease;
+box-sizing: border-box;
+color: var(--color-text-dark);
+}
+
+input:focus, select:focus, textarea:focus {
+border-color: var(--color-primary-light);
+box-shadow: 0 0 0 2px rgba(207, 168, 116, 0.5);
+background-color: var(--color-card-bg);
+}
+
+button {
+width: 100%;
+padding: 15px;
+background-color: var(--color-primary-dark);
+border: none;
+color: white;
+font-size: 1.15rem;
+font-weight: 700;
+letter-spacing: 0.5px;
+border-radius: 4px;
+cursor: pointer;
+transition: background-color 0.3s ease; 
+margin-top: 30px;
+}
+
+button:hover {
+background-color: var(--color-primary-light);
+}
+
+footer {
+text-align: center;
+padding: 30px;
+background-color: var(--color-card-bg);
+border-top: 1px solid var(--color-border);
+color: var(--color-text-muted);
+font-size: 0.9rem;
+margin-top: auto;
+}
+
+@media (max-width: 600px) {
+.form-group {
+grid-template-columns: 1fr;
+}
+}
+</style>
+</head>
+<body>
+
+<div class="site-header">
+<a href="index.html" class="logo">Skill<span>Connect</span></a>
+</div>
+
+<div class="container">
+<header class="page-banner">
+<h1>Employer Sign Up</h1>
+<div class="intro-box">
+<p>
+<strong>Welcome Employer.</strong> Get instant access to post jobs and hire top talent simply by registering your contact details.
+</p>
+</div>
+</header>
+
+<form id="employer-registration-form">
+<h2>Create Employer Account</h2>
+
+<div class="form-group">
+<div class="full-width">
+<label for="company_name">Company / Contact Name</label>
+<input type="text" id="company_name" placeholder="Enter your name or organization name" required>
+</div>
+
+<div class="full-width">
+<label for="email">Email Address (Your Login ID)</label>
+<input type="email" id="email" placeholder="Your primary contact email (used for login)" required>
+</div>
+
+<div class="full-width">
+<label for="password">Account Password</label>
+<input type="password" id="password" placeholder="Create a strong password (Min. 6 characters)" required minlength="6">
+</div>
+
+<div>
+<label for="city">City</label>
+<input type="text" id="city" placeholder="e.g., Hyderabad" required>
+</div>
+
+<div>
+<label for="area">Area / Locality</label>
+<input type="text" id="area" placeholder="e.g., Kondapur, Jubilee Hills" required>
+</div>
+
+<div class="full-width">
+<label for="phone">Phone Number</label>
+<input type="tel" id="phone" placeholder="Contact number" required>
+</div>
+</div>
+
+<button type="submit">Register and Go to Dashboard</button>
+</form>
+</div>
+
+<footer>
+&copy; 2025 SkillConnect. Connecting talent, creating opportunities.
+</footer>
+
+<script>
+document.getElementById('employer-registration-form').addEventListener('submit', function(event) {
+event.preventDefault(); 
+
+if (typeof db === 'undefined') {
+alert("Error: Firebase is not initialized.");
+return;
+}
+
+// FIX: Explicitly get all elements by ID to avoid 'TypeError: Cannot read properties of undefined'
+const companyNameInput = document.getElementById('company_name');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password'); // 💡 New Input
+const cityInput = document.getElementById('city');
+const areaInput = document.getElementById('area');
+const phoneInput = document.getElementById('phone');
+
+
+const formData = {
+company_name: companyNameInput.value.trim(),
+email: emailInput.value.trim(),
+password: passwordInput.value.trim(), // 💡 Added Password to formData
+city: cityInput.value.trim(),
+area: areaInput.value.trim(),
+phone: phoneInput.value.trim(),
+registered_on: new Date()
+};
+
+// Basic Validation
+if (Object.values(formData).some(v => !v)) {
+alert("Please fill out all fields.");
+return;
+}
+if (formData.password.length < 6) {
+alert("Password must be at least 6 characters.");
+return;
+}
+
+// Check if email already exists before registration
+db.collection("employers").where("email", "==", formData.email).limit(1).get()
+.then(snapshot => {
+if (!snapshot.empty) {
+alert("An account with this email already exists. Please use the 'Login' button on the homepage.");
+return;
+}
+
+// Save the data to the 'employers' collection
+db.collection("employers").add(formData)
+.then((docRef) => {
+alert("Registration successful! You are now logged in. Your ID: " + formData.email);
+// Redirect to the employer dashboard after successful sign up
+window.location.href = 'employer_dashboard.html';
+})
+.catch((error) => {
+console.error("Error adding document: ", error);
+alert("Registration failed due to a database error. Check console and security rules.");
+});
+})
+.catch(error => {
+console.error("Error checking for existing email:", error);
+alert("A database error occurred during registration check.");
+});
+});
+</script>
+</body>
+</html>
